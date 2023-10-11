@@ -1,0 +1,32 @@
+$color: red;
+
+div {
+    font-size: 18px;
+
+    ul {
+        color: blue;
+    }
+
+    ol {
+        color: springgreen;
+    }
+}
+
+ul {
+    font-size: 14px;
+    color: $color;
+}
+
+ul {
+    font-size: 18px;
+    color: $color;
+}
+
+%message {
+    font-family: sans-serif;
+}
+
+.success {
+    /*extends %message;*/
+    color: blue;
+}
