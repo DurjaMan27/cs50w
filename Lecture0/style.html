@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Hello!</title>
+        <!--<link rel="stylesheet" href="styles.css">-->
+        <!--<style>
+            h1 {
+                color: blue;
+                text-align: center;
+            }
+            /* now applies to every h1 element */
+        </style>-->
+
+        <style>
+            #foo {
+                color: blue;
+            }
+            .baz {
+                color: red;
+            }
+            /* gives the stylesheet to only the element that has an id of "foo"*/
+        </style>
+    </head>
+    <body>
+        <!-- an id is a way of giving a name to a unique HTML element -->
+        <!-- a class is not unique -->
+        <h1 id="foo">Heading 1</h1>
+        <h1 class="baz">Heading 2</h1>
+        <h1 class="baz">Heading 3</h1>
+        <!--<h1 style="color : red";>This is a second heading</h1>-->
+        <!-- the style attribute is part of CSS and the color property is from CSS-->
+        <!-- this method of adding the style attribute is called inline styling -->
+        Hello, world!
+    </body>
+</html>
