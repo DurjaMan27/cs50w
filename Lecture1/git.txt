@@ -1,0 +1,75 @@
+COMMAND LINE COMMANDS
+
+git clone <url>
+ - the first command that allows you to clone a GitHub repo
+   onto your computer
+ - the url is the GitHub web link to the exact repo that you
+   want to clone
+
+touch hello.html
+ - creates a new file called hello.html
+
+
+SAVING/COMMITTING FILES
+git add <filename>
+ - tells Git to track a file to be committed
+ - allows you to only commit certain changed file
+
+git commit -m "message"
+ - commits the file that you've added
+ - the message allows you to understand what was changed
+
+git status
+ - allows you to check the current status of the repo
+
+git push
+ - allows you to push all changes to GitHub
+ - ensures that all changes made on the computer are now
+   available and updated online in the GitHub repo
+
+git commit -am "message"
+ - automatically allows you to add and commit all files
+ - commits all files rather than specific files that are added
+
+git pull
+ - allows you to pull the latest file version from GitHub
+
+VERSION CONTROL (& MERGE CONFLICTS)
+git reset --hard <commit>
+ - allows you to reset the GitHub file and go back to a previous
+   commit version
+
+git reset --hard origin/master
+ - reset the current version of the files on the computer
+   to the version of the repo on GitHub
+
+BRANCHING
+ways of working on the same repository at the same time
+
+ - to start working on a new feature, you can create a branch
+ - if you find a bug, you can return to the master branch and start
+   working on the new feature while working on the bug
+ - you can switch between branches, and eventually, you can come back
+   to the master branch
+ - all commits will apply to the branch that you are already on
+
+git branch
+ - tells you the branch that you are currently working on and
+   all the other branches available
+
+git checkout -b <branch_name>
+ - allows you to create and switch to a new branch
+
+git checkout <branch_name>
+ - allows you to switch to an existing branch_name
+
+git merge <branch_name>
+ - allows you to merge a selected branch into the branch
+   you are currently working on
+ - if you make changes to the same line, you get merge conflicts
+
+FORKING
+ - making your own copy of the original repository
+ - allows you to make changes to another person's repository
+ - once you've made changes, you can open a pull request to add
+   your code to the original open source repository
