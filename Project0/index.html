@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Search</title>
+        <style>
+            #title {
+                position: relative;
+                margin: auto;
+                padding-top: 70px;
+                font-size: 50px;
+                font-family: 'Trebuchet MS';
+                letter-spacing: -10px;
+                font-weight: bold;
+                line-height: 5px;
+            }
+
+            #links {
+                display: grid;
+                position: absolute;
+                right: 0px;
+                padding: 10px;
+            }
+
+            #links > button {
+                display: grid;
+                width: 300px;
+                height: 50px;
+                font-size: 24px;
+                padding: 10px;
+                outline: black;
+            }
+
+            #links > button:hover {
+                background-color: lightgreen;
+                outline: blue;
+            }
+
+            form {
+                display: grid;
+                flex-wrap: wrap;
+                margin: auto;
+                grid-row-gap: 10px;
+                padding-top: 25px;
+                padding-bottom: 25px;
+            }
+
+            form > #text {
+                width: 750px;
+                height: 30px;
+                margin: auto;
+                border-radius: 10px;
+                border-color: black solid;
+                font-size: 24px;
+            }
+
+            form > #submit, #lucky {
+                display: inline-block;
+                gap: -50px;
+                width: 300px;
+                height: 50px;
+                margin: auto;
+                border: 1px solid black;
+                font-size: 24px;
+                border-radius: 10px;
+                outline: blue;
+            }
+
+            form > #submit:hover, #lucky:hover {
+                outline: black;
+                background-color: blue;
+                color: white;
+                font-size: 24px;
+                font-style: bold;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div id = "links">
+            <button><a href="image.html">Google Image Search</a></button>
+            <button><a href="advanced.html">Google Advanced Search</a></button>
+        </div>
+        <form action="https://google.com/search"">
+            <div id="title">
+                <h1>
+                    <span style="color: #4285F4">G</span>
+                    <span style="color: #DB4437">O</span>
+                    <span style="color: #F4B400">O</span>
+                    <span style="color: #4285F4">G</span>
+                    <span style="color: #0F9D58">L</span>
+                    <span style="color: #DB4437">E</span>
+                </h1>
+            </div>
+            <input id="text" type="text" name="q">
+            <input id="submit" type="submit" value="Google Search">
+            <input id="lucky" type="submit" value="I'm Feeling Lucky" name="btnI">
+        </form>
+    </body>
+</html>
