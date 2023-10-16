@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Advanced Search</title>
+        <style>
+            #title {
+                width: 500px;
+                height: 200px;
+                flex-wrap: wrap;
+                margin: auto;
+                grid-row-gap: 10px;
+                padding-top: 95px;
+                margin-bottom: -60px;
+                font-size: 50px;
+                font-family: 'Trebuchet MS';
+                letter-spacing: -10px;
+                font-weight: bold;
+                text-align: center;
+                line-height: 5px;
+            }
+
+            .subtitle {
+                margin-top: -25px;
+                font-size: 18px;
+                padding-right: 38px;
+                color: #4285F4;
+                text-align: right;
+                letter-spacing: 1px;
+            }
+
+            #links {
+                display: grid;
+                position: absolute;
+                right: 0px;
+                padding: 10px;
+            }
+
+            #links > button {
+                display: grid;
+                width: 300px;
+                height: 50px;
+                font-size: 24px;
+                padding: 10px;
+                outline: black;
+            }
+
+            #links > button:hover {
+                background-color: lightgreen;
+                outline: blue;
+            }
+
+            form {
+                margin: auto;
+                display: grid;
+                grid-template-columns: 250px 625px;
+                flex-wrap: wrap;
+                margin: auto;
+                grid-row-gap: 20px;
+                padding-bottom: 25px;
+                padding-left: 75px
+            }
+
+            form > #text {
+                width: 550px;
+                height: 30px;
+                margin: auto;
+                border-radius: 10px;
+                border-color: black solid;
+                font-size: 24px;
+            }
+
+            form > #submit {
+                width: 250px;
+                height: 50px;
+                border: 1px solid black;
+                font-size: 24px;
+                margin: auto;
+                border-radius: 10px;
+                outline: blue;
+                background-color: blue;
+                color: white;
+            }
+
+            form > #submit:hover {
+                outline: black;
+                color: white;
+                font-size: 24px;
+                font-style: bold;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div id = "links">
+            <button><a href="index.html">Back to Google Search</a></button>
+        </div>
+        <div id="title">
+            <h1 class="main">
+                <span style="color: #4285F4">G</span>
+                <span style="color: #DB4437">O</span>
+                <span style="color: #F4B400">O</span>
+                <span style="color: #4285F4">G</span>
+                <span style="color: #0F9D58">L</span>
+                <span style="color: #DB4437">E</span>
+            </h1>
+            <h2 class="subtitle">Advanced Search</h2>
+        </div>
+        <form action="https://google.com/search">
+            <h2 style="text-decoration:underline">Find pages with...</h2>
+            <h2> </h2>
+            <h3>all these words:</h3>
+            <input id="text" type="text" name="as_q">
+            <h3>this exact word or phrase:</h3>
+            <input id="text" type="text" name="as_epq">
+            <h3>any of these words:</h3>
+            <input id="text" type="text" name="as_oq">
+            <h3>none of these words:</h3>
+            <input id="text" type="text" name="as_eq">
+            <h2> </h2>
+            <input id="submit" type="submit" value="Advanced Search">
+        </form>
+
+    </body>
+</html>
