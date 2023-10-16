@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Image Search</title>
+        <style>
+            #title {
+                position: relative;
+                margin: auto;
+                padding-top: 70px;
+                font-size: 50px;
+                font-family: 'Trebuchet MS';
+                margin-bottom: 5px;
+                letter-spacing: -10px;
+                font-weight: bold;
+                line-height: 5px;
+            }
+
+            .subtitle {
+                margin-top: -25px;
+                font-size: 18px;
+                color: #4285F4;
+                text-align: right;
+                letter-spacing: 1px;
+            }
+
+            #links {
+                display: grid;
+                position: absolute;
+                right: 0px;
+                padding: 10px;
+            }
+
+            #links > button {
+                display: grid;
+                width: 300px;
+                height: 50px;
+                font-size: 24px;
+                padding: 10px;
+                outline: black;
+            }
+
+            #links > button:hover {
+                background-color: lightgreen;
+                outline: blue;
+            }
+
+            form {
+                display: grid;
+                flex-wrap: wrap;
+                margin: auto;
+                grid-row-gap: 10px;
+                padding-top: 25px;
+                padding-bottom: 25px;
+            }
+
+            form > #text {
+                width: 750px;
+                height: 30px;
+                margin: auto;
+                border-radius: 10px;
+                border-color: black solid;
+                font-size: 24px;
+            }
+
+            form > #submit {
+                width: 300px;
+                height: 50px;
+                border: 1px solid black;
+                font-size: 24px;
+                margin: auto;
+                border-radius: 10px;
+                outline: blue;
+            }
+
+            form > #submit:hover {
+                outline: black;
+                background-color: blue;
+                color: white;
+                font-size: 24px;
+                font-style: bold;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div id = "links">
+            <button><a href="index.html">Back to Google Search</a></button>
+        </div>
+        <form action="https://images.google.com/images">
+            <div id="title">
+                <h1 class="main">
+                    <span style="color: #4285F4">G</span>
+                    <span style="color: #DB4437">O</span>
+                    <span style="color: #F4B400">O</span>
+                    <span style="color: #4285F4">G</span>
+                    <span style="color: #0F9D58">L</span>
+                    <span style="color: #DB4437">E</span>
+                </h1>
+                <h2 class="subtitle">Images</h2>
+            </div>
+            <input id="text" type="text" name="q">
+            <input id="submit" type="submit" value="Google Search">
+        </form>
+    </body>
+</html>
