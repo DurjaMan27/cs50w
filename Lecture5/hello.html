@@ -3,10 +3,22 @@
     <head>
         <title>Hello</title>
         <script>
-            alert('hello, world!');
+
+            function hello() {
+                // equivalent to final in Java
+                const heading = document.querySelector('h1');
+
+                if (heading.innerHTML === "Hello!") {
+                    heading.innerHTML = "Goodbye!";
+                } else {
+                    heading.innerHTML = "Hello!";
+                }
+            }
+
         </script>
     </head>
     <body>
         <h1>Hello!</h1>
+        <button onclick="hello()">Click here!</button>
     </body>
 </html>
