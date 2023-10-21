@@ -3,13 +3,13 @@ if (!localStorage.getItem('counter')) {
 }
 
 function count() {
+    let counter = localStorage.getItem('counter');
     counter++;
     document.querySelector('h1').innerHTML = counter;
+    localStorage.setItem('counter', counter);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('h1').innerHTML = localStorage.getItem('counter');
     document.querySelector('button').onclick = count;
-
-    // runs the count function every 1000 milliseconds (1 second)
-    setInterval(count, 1000);
 });
