@@ -4,6 +4,16 @@
         <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <style>
+            #app {
+                text-align: center;
+                font-family: sans-serif;
+            }
+
+            #problem {
+                font-size: 72px;
+            }
+        </style>
         <title>Addition</title>
     </head>
     <body>
@@ -30,17 +40,28 @@
                     if(event.key === "Enter") {
                         const answer = parseInt(state.response);
                         if(state.num1 + state.num2 === answer) {
-
+                            setState({
+                                ...state,
+                                num1: Math.ceil(Math.random() * 10),
+                                num2: Math.ceil(Math.random() * 10),
+                                score: state.score + 1,
+                                response: ""
+                            });
                         } else {
-
+                            setState({
+                                ...state,
+                                score: state.score - 1,
+                                response: ""
+                            });
                         }
                     }
                 }
+
                 return (
                     <div>
-                        <div>{state.num1} + {state.num2}</div>
-                        <input onKeyPress={inputKeyPress} onChange={updateResponse} value={state.response}/>
-                        <div>Score: {score}</div>
+                        <div id="problem">{state.num1} + {state.num2}</div>
+                        <input autoFocus={true} onKeyPress={inputKeyPress} onChange={updateResponse} value={state.response}/>
+                        <div>Score: {state.score}</div>
                     </div>
                 );
             }
