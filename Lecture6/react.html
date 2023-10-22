@@ -10,12 +10,17 @@
         <div id="app"></div>
 
         <script type="text/babel">
+            function Hello() {
+                return (
+                    <h1>Hello!</h1>
+                )
+            }
             function App() {
-                const x = 1;
-                const y = 2;
                 return (
                     <div>
-                        { x + y }
+                        <Hello />
+                        <Hello />
+                        <Hello />
                     </div>
                 );
             }
