@@ -12,15 +12,15 @@
         <script type="text/babel">
             function Hello() {
                 return (
-                    <h1>Hello!</h1>
+                    <h1>Hello, {props.name}!</h1>
                 )
             }
             function App() {
                 return (
                     <div>
-                        <Hello />
-                        <Hello />
-                        <Hello />
+                        <Hello name="Harry" />
+                        <Hello name="Ron" />
+                        <Hello name="Hermione" />
                     </div>
                 );
             }
