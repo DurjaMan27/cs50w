@@ -9,9 +9,16 @@ def index(request):
     })
 
 def title(request, title):
-    return render(request, f"encyclopedia/{title}.html", {
+    returnVal = render(request, f"encyclopedia/{title}.html", {
         "title": util.get_entry(title)
     })
+
+    if returnVal == None:
+        return render(request, "encyclopedia/error.html", {
+            "title": title.capitalize()
+        })
+    else:
+        return returnVal
 
 def newEntry(request):
     if request.method == "POST":
