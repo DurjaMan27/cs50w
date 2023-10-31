@@ -7,6 +7,3 @@ def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
     })
-
-def get_entry(request):
-    return render(request, "encyclopedia/")
