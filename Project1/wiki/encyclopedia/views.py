@@ -24,13 +24,13 @@ def title(request, title):
         '''return render(request, "encyclopedia/error.html", {
             "title": title.capitalize()
         })'''
-        return HttpResponseRedirect(reverse('encyclopedia:error'))
+        return HttpResponseRedirect(reverse("error"))
     else:
         return returnVal
 
 def error(request):
-    return render(request, "encyclopedia/error.html", {
-    })
+    return render(request, "encyclopedia/error.html")
+
 '''
 def newEntry(request):
     if request.method == "POST":
