@@ -1,7 +1,12 @@
 from django.shortcuts import render
+from django import forms
+
 
 from . import util
 
+class NewTaskForm(forms.Form):
+    title = forms.CharField(label="newEntry")
+    content = forms.Textarea(label="content")
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
