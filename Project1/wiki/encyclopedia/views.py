@@ -13,6 +13,16 @@ class NewTaskForm(forms.Form):
 class EditTaskForm(forms.Form):
     content = forms.CharField(label="content", widget=forms.Textarea(), max_length=400)
 
+    def __init__(self, *args, **kwargs):
+        title = kwargs.pop('title', '')  # Get the 'title' argument passed when creating the form
+        super(EditTaskForm, self).__init__(*args, **kwargs)
+
+        # Set the initial value of 'content' based on the title
+        if title:
+            page_content = util.get_entry(title)
+            if page_content:
+                self.fields['content'].initial = page_content
+
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
@@ -59,7 +69,7 @@ def newEntry(request):
 
 def editEntry(request, title):
     if request.method == "POST":
-        form = EditTaskForm(request.POST)
+        form = EditTaskForm(request.POST, title=title)
         if form.is_valid():
             util.save_entry(title, form.cleaned_data["content"])
             return HttpResponseRedirect(reverse("title", kwargs={'title': title}))
@@ -70,6 +80,6 @@ def editEntry(request, title):
             })
 
     return render(request, "encyclopedia/editentry.html", {
-        "form": EditTaskForm(),
+        "form": EditTaskForm(title=title),
         "title": title
     })
