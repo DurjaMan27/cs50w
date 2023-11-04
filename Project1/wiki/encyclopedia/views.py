@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+import random
 
 
 from . import util
@@ -83,3 +84,8 @@ def editEntry(request, title):
         "form": EditTaskForm(title=title),
         "title": title
     })
+
+def randomPage(request):
+    list_entries = util.list_entries()
+
+    return title(request, random.choice(list_entries))
