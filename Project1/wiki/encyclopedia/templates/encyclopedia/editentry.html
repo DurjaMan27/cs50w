@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Create a New Wiki Page:</h1>
-    <form action="{% url 'editentry' %}" method="post">
+    <h1>Edit {{ title }}'s Wiki Page:</h1>
+    <form action="{% url 'editentry' title %}" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit" name="Save Entry">
