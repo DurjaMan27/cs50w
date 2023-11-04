@@ -28,26 +28,26 @@ def title(request, title):
     else:
         return returnVal
 
-def error(request):
-    return render(request, "encyclopedia/error.html")
+def searchError(request):
+    return render(request, "encyclopedia/searchError.html")
 
-'''
+
 def newEntry(request):
     if request.method == "POST":
         form = NewTaskForm(request.POST)
-        if util.get_entry(form.title):
+        if util.get_entry(form.title) != None:
             return render(request, "encyclopedia/error.html", {
             "title": title.capitalize()
         })
         if form.is_valid():
             #task = form.cleaned_data["task"]
             #request.session["tasks"] += [task]
-            return HttpResponseRedirect(reverse("wiki:index"))
+            return HttpResponseRedirect(reverse("title"))
         else:
-            return render(request, "encyclopedia/add.html", {
+            return render(request, "encyclopedia/newEntry.html", {
                 "form": form
             })
 
-    return render(request, "encyclopedia/add.html", {
+    return render(request, "encyclopedia/newEntry.html", {
         "form": NewTaskForm()
-    })'''
+    })
