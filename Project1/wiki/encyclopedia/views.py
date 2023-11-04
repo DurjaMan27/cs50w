@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 import random
 import markdown
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 
 
 from . import util
@@ -42,7 +44,7 @@ def title(request, title):
         })'''
         return HttpResponseRedirect(reverse("error"))
     else:
-        return markdown.markdown(returnVal)
+        return returnVal
 
 def searchError(request):
     return render(request, "encyclopedia/searchError.html")
