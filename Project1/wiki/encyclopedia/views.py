@@ -20,6 +20,7 @@ def index(request):
 
 def title(request, title):
     returnVal = render(request, "encyclopedia/entry.html", {
+        "title": title,
         "content": util.get_entry(title)
     })
 
@@ -64,9 +65,11 @@ def editEntry(request, title):
             return HttpResponseRedirect(reverse("title", kwargs={'title': title}))
         else:
             return render(request, "encyclopedia/editentry.html", {
-                "form": form
+                "form": form,
+                "title": title
             })
 
     return render(request, "encyclopedia/editentry.html", {
-        "form": EditTaskForm()
+        "form": EditTaskForm(),
+        "title": title
     })

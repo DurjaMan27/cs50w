@@ -9,8 +9,7 @@
 
     {{ content }}
 
-    <div id="edit">
-        <a href="{% url 'editentry' title %}"><button type="button">Edit Entry</button></a>
-    </div>
+    <a href="{% url 'editentry' title %}"><button type="button">Edit Entry</button></a>
+
 
 {% endblock %}
