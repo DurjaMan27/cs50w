@@ -6,7 +6,7 @@
 
 {% block body %}
     <h1>Create a New Wiki Page:</h1>
-    <form action="{% url 'index' %}" method="post">
+    <form action="{% url 'newentry' %}" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit">
