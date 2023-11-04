@@ -6,7 +6,7 @@
 
 {% block body %}
     <h1>This page already exists!</h1>
-    <h3>The page <a href="{%%}">{{ title }}</a> already exists.</h3>
+    <h3>The page <a href="{% url 'title' title %}">{{ title }}</a> already exists.</h3>
     <h3>Try creating a page with a new name!</h3>
     <a href="newEntry.html">Create a new page</a>
     <a href="/"><button type="button">Return to Search</button></a>
