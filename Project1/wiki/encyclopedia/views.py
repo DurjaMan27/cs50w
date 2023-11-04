@@ -3,6 +3,7 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import random
+import markdown
 
 
 from . import util
@@ -41,7 +42,7 @@ def title(request, title):
         })'''
         return HttpResponseRedirect(reverse("error"))
     else:
-        return returnVal
+        return markdown.markdown(returnVal)
 
 def searchError(request):
     return render(request, "encyclopedia/searchError.html")
