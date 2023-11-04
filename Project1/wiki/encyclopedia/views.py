@@ -7,8 +7,8 @@ from django.http import HttpResponseRedirect
 from . import util
 
 class NewTaskForm(forms.Form):
-    title = forms.CharField(label="newEntry")
-    content = forms.Textarea()
+    title = forms.CharField(label="Wiki Page Title", max_length=20)
+    content = forms.CharField(label="content", widget=forms.Textarea(), max_length=400)
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
