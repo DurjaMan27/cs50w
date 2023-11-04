@@ -41,10 +41,10 @@ def newEntry(request):
         if form.is_valid():
             #task = form.cleaned_data["task"]
             #request.session["tasks"] += [task]
-            if util.get_entry(form.cleaned_data["title"]) == None:
+            if util.get_entry(form.cleaned_data["title"]) != None:
                 print("i am here...")
                 return render(request, "encyclopedia/newEntryError.html", {
-                    "title": title.capitalize()
+                    "title": form.cleaned_data["title"]
                 })
             else:
                 util.save_entry(form.cleaned_data["title"], form.cleaned_data["content"])
