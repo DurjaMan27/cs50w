@@ -35,15 +35,20 @@ def searchError(request):
 def newEntry(request):
     if request.method == "POST":
         form = NewTaskForm(request.POST)
-        if util.get_entry(form.title) != None:
-            return render(request, "encyclopedia/newEntryError.html", {
-            "title": title.capitalize()
-        })
+        #variableTitle = form.cleaned_data["title"]
+        #variableTitle = form.title
+        #print("this is title ", variableTitle)
         if form.is_valid():
             #task = form.cleaned_data["task"]
             #request.session["tasks"] += [task]
-            util.save_entry(form.title, form.content)
-            return HttpResponseRedirect(reverse("title"))
+            if util.get_entry(form.cleaned_data["title"]) == None:
+                print("i am here...")
+                return render(request, "encyclopedia/newEntryError.html", {
+                    "title": title.capitalize()
+                })
+            else:
+                util.save_entry(form.cleaned_data["title"], form.cleaned_data["content"])
+                return HttpResponseRedirect(reverse("title", kwargs={'title': form.cleaned_data["title"]}))
         else:
             return render(request, "encyclopedia/newentry.html", {
                 "form": form
