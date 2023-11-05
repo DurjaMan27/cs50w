@@ -6,9 +6,17 @@
 
 {% block body %}
     <h1>Create a New Wiki Page:</h1>
+    <h1></h1>
     <form action="{% url 'newentry' %}" method="post">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit">
+        <div>
+            <label for="{{ form.title.id_for_label }}">Title:</label>
+            {{ form.title }}
+        </div>
+        <div>
+            {{ form.content.label_tag }}
+            {{ form.content }}
+        </div>
+        <input type="submit" value="Save Entry">
     </form>
 {% endblock %}

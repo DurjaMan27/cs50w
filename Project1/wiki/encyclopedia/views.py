@@ -11,11 +11,15 @@ from django.core.files.storage import default_storage
 from . import util
 
 class NewTaskForm(forms.Form):
-    title = forms.CharField(label="Wiki Page Title", max_length=40)
-    content = forms.CharField(label="Wiki Page Content", widget=forms.Textarea(), max_length=400)
+    #title = forms.CharField(label="title", max_length=40)
+    #content = forms.CharField(label="Wiki Page Content", widget=forms.Textarea(), max_length=400)
+    title = forms.CharField(label="Title", widget=forms.TextInput(attrs={'placeholder': 'Wiki Page Title', 'style': 'width: 350px; height: 25px;'}))
+    content = forms.CharField(label="Content", widget=forms.Textarea(attrs={'placeholder':'Page Content', 'style': 'width: 600px; display: grid;'}))
+
 
 class EditTaskForm(forms.Form):
-    content = forms.CharField(label="content", widget=forms.Textarea(), max_length=400)
+    content = forms.CharField(label="Content", widget=forms.Textarea(attrs={'placeholder':'Page Content', 'style': 'width: 600px; display: grid;'}))
+    #content = forms.CharField(label="content", widget=forms.Textarea(), max_length=400)
 
     def __init__(self, *args, **kwargs):
         title = kwargs.pop('title', '')  # Get the 'title' argument passed when creating the form
