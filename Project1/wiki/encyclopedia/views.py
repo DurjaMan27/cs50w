@@ -3,7 +3,7 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import random
-import markdown
+from markdown2 import markdown
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
@@ -33,14 +33,16 @@ def index(request):
     })
 
 def title(request, title):
-    returnVal = render(request, "encyclopedia/entry.html", {
-        "title": title,
-        "content": util.get_entry(title)
-    })
+    content = util.get_entry(title)
     if util.get_entry(title) == None:
         return HttpResponseRedirect(reverse("error"))
     else:
-        return returnVal
+        #return returnVal
+        returnVal = markdown(content)
+        return render(request, "encyclopedia/entry.html", {
+            "title": title,
+            "content": returnVal
+            })
 
 def searchError(request):
     return render(request, "encyclopedia/searchError.html")
