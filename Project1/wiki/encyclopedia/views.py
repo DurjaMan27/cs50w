@@ -37,17 +37,22 @@ def title(request, title):
         "title": title,
         "content": util.get_entry(title)
     })
-
     if util.get_entry(title) == None:
-        '''return render(request, "encyclopedia/error.html", {
-            "title": title.capitalize()
-        })'''
         return HttpResponseRedirect(reverse("error"))
     else:
         return returnVal
 
 def searchError(request):
     return render(request, "encyclopedia/searchError.html")
+
+def search(request):
+    q = request.GET.get('q').strip()
+    if q in util.list_entries():
+        return HttpResponseRedirect("entry", title=q)
+    return render(request, "encyclopedia/searchresults.html", {
+        "entries": util.search(q),
+        "q": q
+        })
 
 
 def newEntry(request):
