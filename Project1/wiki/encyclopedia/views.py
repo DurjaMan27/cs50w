@@ -35,7 +35,7 @@ def index(request):
 def title(request, title):
     content = util.get_entry(title)
     if util.get_entry(title) == None:
-        return HttpResponseRedirect(reverse("error"))
+        return HttpResponseRedirect(reverse("searchError"))
     else:
         #return returnVal
         returnVal = markdown(content)
@@ -51,10 +51,13 @@ def search(request):
     q = request.GET.get('q').strip()
     if q in util.list_entries():
         return HttpResponseRedirect("entry", title=q)
-    return render(request, "encyclopedia/searchresults.html", {
-        "entries": util.search(q),
-        "q": q
-        })
+    elif len(util.search(q)) == 0:
+        return HttpResponseRedirect(reverse("searchError"))
+    else:
+        return render(request, "encyclopedia/searchresults.html", {
+            "entries": util.search(q),
+            "q": q
+            })
 
 
 def newEntry(request):
@@ -97,5 +100,4 @@ def editEntry(request, title):
 
 def randomPage(request):
     list_entries = util.list_entries()
-
     return title(request, random.choice(list_entries))
