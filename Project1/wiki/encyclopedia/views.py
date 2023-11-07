@@ -53,8 +53,9 @@ def searchError(request):
 
 def search(request):
     q = request.GET.get('q').strip()
-    if q in util.list_entries():
-        return HttpResponseRedirect("entry", title=q)
+    listval = [x.lower() for x in util.list_entries()]
+    if q.lower() in listval:
+        return HttpResponseRedirect(reverse("title", kwargs={'title': q}))
     elif len(util.search(q)) == 0:
         return HttpResponseRedirect(reverse("searchError"))
     else:
