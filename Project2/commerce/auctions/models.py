@@ -6,6 +6,7 @@ class User(AbstractUser):
     pass
 
 class Listing(models.Model):
+    auction_open = models.BooleanField(default=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
     product_title = models.CharField(max_length=64)
     product_description = models.CharField(max_length=255)
