@@ -1,2 +1,16 @@
 {% extends auctions/layout.html %}
 
+{% block body %}
+    <img src="{% static listing.image_url %}" alt="product_image">
+
+    <h1>{{ listing.product_title }}</h1>
+
+    <a>{{ listing.product_description }}</a>
+
+    <a>Product Category: {{ listing.product_category }}</a>
+
+    <a>Posted by: {{ listing.user }}</a>
+
+    <h2>Starting Bid / Most Recent Bid: {{ listing.product_startingBid }}</h2>
+
+{% endblock %}
