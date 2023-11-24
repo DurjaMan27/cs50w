@@ -3,8 +3,16 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
 from .models import User
+
+class NewListingForm(forms.Form):
+    title = forms.CharField(label="Product", widget=forms.TextInput(attrs={'placeholder': 'Product Title'}))
+    description = forms.CharField(label="Description", widget=forms.Textarea(attrs={'placeholder':'Product Description'}))
+    startingBid = forms.IntegerField(label="Starting Bid")
+    productCategory = forms.CharField(label="category", required=False)
+    productImage = forms.URLField(label="image", required=False)
 
 
 def index(request):
@@ -64,5 +72,23 @@ def register(request):
 
 def newlisting(request):
     if request.method == "POST":
-    else:
-        
+        form = NewListingForm(request.POST)
+        if form.is_valid():
+            #models.newObject
+            print("hello")
+        else:
+            return render(request, "commerce/create.html", {
+                "form": form
+            })
+
+    return render(request, "commerce/create.html", {
+        "form": NewListingForm()
+    })
+
+def all_listings(request, flight_id):
+    flight = Flight.objects.get(id=flight_id)
+    passengers = flight.passengers.all()
+    return render(request, "flights/flight.html", {
+        "flight": flight,
+        "passengers": passengers
+    })
