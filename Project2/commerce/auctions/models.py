@@ -11,7 +11,7 @@ class Listing(models.Model):
     product_description = models.CharField(max_length=255)
     product_startingBid = models.IntegerField()
     product_category = models.CharField(blank=True)
-    product_url = models.CharField(max_length=255, blank=True)
+    image_url = models.CharField(max_length=255, blank=True)
 
 class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
