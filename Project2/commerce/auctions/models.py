@@ -17,8 +17,10 @@ class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
     bid_amount = models.IntegerField()
     product = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="")
+    product_poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
     comment = models.CharField(max_length=255)
     product = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="")
+    product_poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
