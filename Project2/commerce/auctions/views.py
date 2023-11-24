@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 
-from .models import User
+from .models import User, Listing, Comment, Bid
 
 class NewListingForm(forms.Form):
     title = forms.CharField(label="Product", widget=forms.TextInput(attrs={'placeholder': 'Product Title'}))
@@ -85,10 +85,12 @@ def newlisting(request):
         "form": NewListingForm()
     })
 
-def all_listings(request, flight_id):
-    flight = Flight.objects.get(id=flight_id)
-    passengers = flight.passengers.all()
+def listing(request, username, product):
+    listing = Listing.objects.get(product=product, user=username)
+    comments = Comment.objects.get(product=product, product_poster=username)
+    bids = Bid.objects.get(product=product, product_poster=username)
     return render(request, "flights/flight.html", {
-        "flight": flight,
-        "passengers": passengers
+        "listing": listing,
+        "comments": comments,
+        "bids": bids
     })
