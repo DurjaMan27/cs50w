@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    watchlist = models.ManyToManyField('Listing', related_name='watchlist')
+    watchlist = models.ManyToManyField('Listing', related_name='watchlist', blank=True)
 
 class Listing(models.Model):
     auction_open = models.BooleanField(default=True)
