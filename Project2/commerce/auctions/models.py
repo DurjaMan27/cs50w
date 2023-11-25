@@ -16,13 +16,13 @@ class Listing(models.Model):
     image_url = models.CharField(max_length=255, blank=True)
 
 class Bid(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     bid_amount = models.IntegerField()
-    product = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="")
-    product_poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
+    product = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    product_poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="original")
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.CharField(max_length=255)
-    product = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="")
-    product_poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="")
+    product = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    product_poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="original")
