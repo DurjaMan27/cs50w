@@ -106,23 +106,25 @@ def listing(request, username, product):
                 newBidAmount = int(request.POST["bid_amount"])
 
                 if newBidAmount <= listing.product_startingBid:
-                    ret
+                    return HttpResponse("Your bid is too low. Please enter a bid amount that is greater than the current bid.")
+                else:
+                    # Finding the passenger based on the id
+                    user = request.User
 
-                # Finding the passenger based on the id
-                user = request.User
+                    # Add passenger to the flight
+                    bid.user = user
+                    bid.bid_amount = newBidAmount
+                    listing.product_startingBid = newBidAmount
+                    listing.product_description = user
 
-                # Add passenger to the flight
-                listing.product_startingBid = newBidAmount
-                listing.product_description = user
-
-                # Reload page
-                return render(request, "auctions/listing.html", {
-                    "listing": listing,
-                    "comments": comments,
-                    "bids": bids,
-                    "bid_form": NewBidForm(),
-                    "comment_form": NewCommentForm()
-                })
+                    # Reload page
+                    return render(request, "auctions/listing.html", {
+                        "listing": listing,
+                        "comments": comments,
+                        "bids": bids,
+                        "bid_form": NewBidForm(),
+                        "comment_form": NewCommentForm()
+                    })
         elif 'commentSubmit' in request.POST:
             if commentForm.is_valid():
                 # Finding the bidAmount from the submitted form data
