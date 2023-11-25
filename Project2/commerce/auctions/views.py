@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django import forms
+from django.contrib.auth.decorators import login_required
 
 from .models import User, Listing, Comment, Bid
 
@@ -110,8 +111,8 @@ def newlisting(request):
 
 def listing(request, username, product):
     listing = Listing.objects.get(product_title=product, user=username)
-    comments = Comment.objects.get(product=listing.product_title, product_poster=username)
-    bids = Bid.objects.get(product=listing.product_title, product_poster=username)
+    comments = Comment.objects.get(product=listing, product_poster=username)
+    bids = Bid.objects.get(product=listing, product_poster=username)
     if request.method == "POST":
         bidForm = NewBidForm(request.POST, username=username, product=product)
         commentForm = NewCommentForm(request.POST, username=username, product=product)
