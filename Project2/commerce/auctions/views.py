@@ -7,6 +7,7 @@ from django import forms
 
 from .models import User, Listing, Comment, Bid
 
+category_list = ["all", "fashion", "toys", "electronics", "home", "collectibles", "antiques"]
 class NewListingForm(forms.Form):
     title = forms.CharField(label="Product", widget=forms.TextInput(attrs={'placeholder': 'Product Title'}))
     description = forms.CharField(label="Description", widget=forms.Textarea(attrs={'placeholder':'Product Description'}))
@@ -152,10 +153,18 @@ def all_listings(request, category):
     if category == "all":
         listings = Listing.objects.get()
         return render(request, "auctions/allListings.html", {
-            "listings": listings
+            "listings": listings,
+            "category": category
         })
     else:
         listings = Listing.objects.get(product_category=category)
         return render(request, "auctions/allListings.html", {
-            "listings": listings
+            "listings": listings,
+            "category": category
         })
+
+def categories(request):
+    categoryZip = zip(category_list, category_list.capitalize())
+    return render(request, "auctions/categories.html", {
+        "categoryZip": categoryZip
+    })

@@ -2,7 +2,8 @@
 
 {% block body %}
     <li>
-        {% for category in categories %}
-            <a href="{% url 'all_listings' category %}"><ul>{{ category }}</ul></a>
+        {% for normal, upper in categoryZip %}
+            <a href="{% url 'all_listings' normal %}"><ul>{{ upper }}</ul></a>
+        {% endfor %}
     </li>
 {% endblock %}
