@@ -9,10 +9,21 @@ from .models import User, Listing, Comment, Bid
 
 category_list = ["all", "fashion", "toys", "electronics", "home", "collectibles", "antiques"]
 class NewListingForm(forms.Form):
+
+    CATEGORY_CHOICES = [
+        ('all', 'All'),
+        ('home', 'Home'),
+        ('fashion', 'Fashion'),
+        ('toys', 'Toys'),
+        ('electronics', 'Electronics'),
+        ('collectibles', 'Collectibles'),
+        ('antiques', 'Antiques')
+    ]
+
     title = forms.CharField(label="Product", widget=forms.TextInput(attrs={'placeholder': 'Product Title'}))
     description = forms.CharField(label="Description", widget=forms.Textarea(attrs={'placeholder':'Product Description'}))
     startingBid = forms.IntegerField(label="Starting Bid")
-    productCategory = forms.CharField(label="category", required=False)
+    productCategory = forms.ChoiceField(label="category", choices=CATEGORY_CHOICES, required=False)
     productImage = forms.URLField(label="image", required=False)
 
 class NewCommentForm(forms.Form):
@@ -82,21 +93,25 @@ def newlisting(request):
     if request.method == "POST":
         form = NewListingForm(request.POST)
         if form.is_valid():
-            #models.newObject
-            print("hello")
+            newListing = Listing(auction_open=True, user=request.User, product_title=form.cleaned_data["title"],
+                                    product_description=form.cleaned_data["description"],
+                                    product_startingBid=form.cleaned_data["startingBid"],
+                                    product_category=form.cleaned_data["category"],
+                                    image_url=form.cleaned_data["image_url"])
+            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.User, 'product_title':newListing.product_title}))
         else:
-            return render(request, "commerce/create.html", {
+            return render(request, "auctions/create.html", {
                 "form": form
             })
 
-    return render(request, "commerce/create.html", {
+    return render(request, "auctions/create.html", {
         "form": NewListingForm()
     })
 
 def listing(request, username, product):
-    listing = Listing.objects.get(product=product, user=username)
-    comments = Comment.objects.get(product=product, product_poster=username)
-    bids = Bid.objects.get(product=product, product_poster=username)
+    listing = Listing.objects.get(product_title=product, user=username)
+    comments = Comment.objects.get(product=listing.product_title, product_poster=username)
+    bids = Bid.objects.get(product=listing.product_title, product_poster=username)
     if request.method == "POST":
         bidForm = NewBidForm(request.POST, username=username, product=product)
         commentForm = NewCommentForm(request.POST, username=username, product=product)
