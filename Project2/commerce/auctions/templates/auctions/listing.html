@@ -17,7 +17,7 @@
             <form method="post">
                 {% csrf_token %}
                 {{ bid_form }}
-                <submit type="submit" value="Place Bid"></submit>
+                <submit type="submit" value="Place Bid" name="bidSubmit"></submit>
             </form>
         {% else %}
             <h3>Please log-in to place a bid on this listing.</h3>
@@ -31,7 +31,7 @@
         <form method="post">
             {% csrf_token %}
             {{ comment_form }}
-            <submit type="submit" value="Post Comment"></submit>
+            <submit type="submit" value="Post Comment" name="commentSubmit"></submit>
         </form>
     {% endif %}
     <li>
