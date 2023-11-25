@@ -105,6 +105,9 @@ def listing(request, username, product):
                 # Finding the bidAmount from the submitted form data
                 newBidAmount = int(request.POST["bid_amount"])
 
+                if newBidAmount <= listing.product_startingBid:
+                    ret
+
                 # Finding the passenger based on the id
                 user = request.User
 
