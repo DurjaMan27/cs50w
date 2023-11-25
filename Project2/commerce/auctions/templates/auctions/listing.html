@@ -12,5 +12,20 @@
     <a>Posted by: {{ listing.user }}</a>
 
     <h2>Starting Bid / Most Recent Bid: {{ listing.product_startingBid }}</h2>
+    {% if listing.auction_open %}
+    {% else %}
+
+    <h3>Comments</h3>
+    {% if user.is_authenticated() %}
+        <form method="post">
+            {% csrf_token %}
+            
+        </form>
+    {% endif %}
+    <li>
+        {% for comment in comments %}
+            <ul>{{ comment }}</ul>
+        {% endfor %}
+    </li>
 
 {% endblock %}
