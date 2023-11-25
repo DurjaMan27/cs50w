@@ -100,20 +100,17 @@ def listing(request, username, product):
         commentForm = NewCommentForm(request.POST, username=username, product=product)
         if 'bidSubmit' in request.POST:
             if bidForm.is_valid():
-                bid = Bid.objects.get(user=username)
-
                 # Finding the bidAmount from the submitted form data
                 newBidAmount = int(request.POST["bid_amount"])
 
                 if newBidAmount <= listing.product_startingBid:
                     return HttpResponse("Your bid is too low. Please enter a bid amount that is greater than the current bid.")
                 else:
-                    # Finding the passenger based on the id
                     user = request.User
 
-                    # Add passenger to the flight
-                    bid.user = user
-                    bid.bid_amount = newBidAmount
+                    Bid.objects.delete(user=user, product=listing, product_poster=username)
+
+                    new_bid = Bid(user=user, product=listing, product_poster=username, bid_amount = newBidAmount)
                     listing.product_startingBid = newBidAmount
                     listing.product_description = user
 
@@ -135,4 +132,16 @@ def listing(request, username, product):
             "bids": bids,
             "bid_form": NewBidForm(),
             "comment_form": NewCommentForm()
+        })
+
+def all_listings(request, category):
+    if category == "all":
+        listings = Listing.objects.get()
+        return render(request, "auctions/allListings.html", {
+            "listings": listings
+        })
+    else:
+        listings = Listing.objects.get(product_category=category)
+        return render(request, "auctions/allListings.html", {
+            "listings": listings
         })
