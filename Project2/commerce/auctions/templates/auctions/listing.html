@@ -13,13 +13,25 @@
 
     <h2>Starting Bid / Most Recent Bid: {{ listing.product_startingBid }}</h2>
     {% if listing.auction_open %}
+        {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+                {{ bid_form }}
+                <submit type="submit" value="Place Bid"></submit>
+            </form>
+        {% else %}
+            <h3>Please log-in to place a bid on this listing.</h3>
+        {% endif %}
     {% else %}
+        <h1>This auction has closed.</h1>
+    {% endif %}
 
     <h3>Comments</h3>
     {% if user.is_authenticated() %}
         <form method="post">
             {% csrf_token %}
-            
+            {{ comment_form }}
+            <submit type="submit" value="Post Comment"></submit>
         </form>
     {% endif %}
     <li>
