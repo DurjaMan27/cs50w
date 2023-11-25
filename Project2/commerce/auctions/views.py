@@ -14,6 +14,12 @@ class NewListingForm(forms.Form):
     productCategory = forms.CharField(label="category", required=False)
     productImage = forms.URLField(label="image", required=False)
 
+class NewCommentForm(forms.Form):
+    comment = forms.CharField(label="Comment", max_length=500)
+
+class NewBidForm(forms.Form):
+    bid_amount = forms.IntegerField(label="Bid")
+
 
 def index(request):
     return render(request, "auctions/index.html")
