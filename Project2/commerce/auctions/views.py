@@ -114,6 +114,7 @@ def listing(request, username, product):
                     listing.product_startingBid = newBidAmount
                     listing.product_description = user
 
+                    bids = Bid.objects.get(product=product, product_poster=username)
                     # Reload page
                     return render(request, "auctions/listing.html", {
                         "listing": listing,
@@ -124,7 +125,20 @@ def listing(request, username, product):
                     })
         elif 'commentSubmit' in request.POST:
             if commentForm.is_valid():
-                print() # fill in here
+                newComment = request.POST["comment"]
+                user = request.User
+
+                new_bid = Comment(user=user, product=listing, product_poster=username, comment = newComment)
+
+                comments = Comment.objects.get(product=product, product_poster=username)
+                # Reload page
+                return render(request, "auctions/listing.html", {
+                    "listing": listing,
+                    "comments": comments,
+                    "bids": bids,
+                    "bid_form": NewBidForm(),
+                    "comment_form": NewCommentForm()
+                })
     else:
         return render(request, "auctions/listing.html", {
             "listing": listing,
