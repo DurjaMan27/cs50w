@@ -171,7 +171,7 @@ def categories(request):
     })
 
 @login_required
-def watchlist(request):
+def watchlist(request, listing):
     return render(request, "auctions/watchlist.html", {
         "watchlist": User.watchlist
     })
