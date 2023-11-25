@@ -95,8 +95,56 @@ def listing(request, username, product):
     listing = Listing.objects.get(product=product, user=username)
     comments = Comment.objects.get(product=product, product_poster=username)
     bids = Bid.objects.get(product=product, product_poster=username)
-    return render(request, "flights/flight.html", {
-        "listing": listing,
-        "comments": comments,
-        "bids": bids
-    })
+    if request.method == "POST":
+        bidForm = NewBidForm(request.POST, username=username, product=product)
+        commentForm = NewCommentForm(request.POST, username=username, product=product)
+        if 'bidSubmit' in request.POST:
+            if bidForm.is_valid():
+                bid = Bid.objects.get(user=username)
+
+                # Finding the bidAmount from the submitted form data
+                newBidAmount = int(request.POST["bid_amount"])
+
+                # Finding the passenger based on the id
+                user = request.User
+
+                # Add passenger to the flight
+                listing.product_startingBid = newBidAmount
+                listing.product_description = user
+
+                # Reload page
+                return render(request, "auctions/listing.html", {
+                    "listing": listing,
+                    "comments": comments,
+                    "bids": bids,
+                    "bid_form": NewBidForm(),
+                    "comment_form": NewCommentForm()
+                })
+        elif 'commentSubmit' in request.POST:
+            if commentForm.is_valid():
+                # Finding the bidAmount from the submitted form data
+                newComment = int(request.POST["comment"])
+
+                # Finding the passenger based on the id
+                user = request.User
+
+                # Add passenger to the flight
+                listing.product_startingBid = newBidAmount
+                listing.product_description = user
+
+                # Reload page
+                return render(request, "auctions/listing.html", {
+                    "listing": listing,
+                    "comments": comments,
+                    "bids": bids,
+                    "bid_form": NewBidForm(),
+                    "comment_form": NewCommentForm()
+                })
+    else:
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "comments": comments,
+            "bids": bids,
+            "bid_form": NewBidForm(),
+            "comment_form": NewCommentForm()
+        })
