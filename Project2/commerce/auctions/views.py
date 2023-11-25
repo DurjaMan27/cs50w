@@ -172,6 +172,11 @@ def categories(request):
 
 @login_required
 def watchlist(request, listing):
+    User.watchlist.add(listing)
     return render(request, "auctions/watchlist.html", {
         "watchlist": User.watchlist
     })
+
+def close_auction(request, listing):
+    listing.auction_open = False
+    return HttpResponseRedirect(reverse("all_listings", kwargs={'category': 'all'}))
