@@ -77,6 +77,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+@login_required
 def newlisting(request):
     if request.method == "POST":
         form = NewListingForm(request.POST)
@@ -167,4 +168,10 @@ def categories(request):
     categoryZip = zip(category_list, category_list.capitalize())
     return render(request, "auctions/categories.html", {
         "categoryZip": categoryZip
+    })
+
+@login_required
+def watchlist(request):
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": User.watchlist
     })
