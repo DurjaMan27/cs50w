@@ -11,8 +11,16 @@
 
     <a>Posted by: {{ listing.user }}</a>
 
-    <h2>Starting Bid / Most Recent Bid: {{ listing.product_startingBid }}</h2>
+    {% if user.is_authenticated %}
+        {% if user == listing.user %}
+            <a href="{% url 'closeAuction' listing %}"><button>Close Listing</button></a>
+        {% else %}
+            <a href="{% url 'watchlist' listing %}"><button>Add to Watchlist</button></a>
+        {% endif %}
+    {% endif %}
+
     {% if listing.auction_open %}
+        <h2>Starting Bid / Most Recent Bid: {{ listing.product_startingBid }}</h2>
         {% if user.is_authenticated %}
             <form method="post">
                 {% csrf_token %}
@@ -24,10 +32,13 @@
         {% endif %}
     {% else %}
         <h1>This auction has closed.</h1>
+        {% if user == listing.product_currentBidder %}
+            <h2>You won this auction! Congrats!</h2>
+        {% endif %}
     {% endif %}
 
-    <h3>Comments</h3>
-    {% if user.is_authenticated() %}
+    <h2>Comments</h2>
+    {% if user.is_authenticated and listing.auction_open %}
         <form method="post">
             {% csrf_token %}
             {{ comment_form }}
