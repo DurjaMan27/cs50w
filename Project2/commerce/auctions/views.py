@@ -35,7 +35,10 @@ class NewBidForm(forms.Form):
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    listings = Listing.objects.get()
+    return render(request, "auctions/index.html", {
+        "listings": listings
+    })
 
 
 def login_view(request):
@@ -168,11 +171,7 @@ def listing(request, username, product):
 
 def all_listings(request, category):
     if category == "all":
-        listings = Listing.objects.get()
-        return render(request, "auctions/allListings.html", {
-            "listings": listings,
-            "category": category
-        })
+        return HttpResponseRedirect(reverse("index"))
     else:
         listings = Listing.objects.get(product_category=category)
         return render(request, "auctions/allListings.html", {
