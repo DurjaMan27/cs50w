@@ -181,7 +181,10 @@ def all_listings(request, category):
         })
 
 def categories(request):
-    categoryZip = zip(category_list, category_list.capitalize())
+    categoryUpper = []
+    for item in category_list:
+        categoryUpper.append(item.capitalize())
+    categoryZip = zip(category_list, categoryUpper)
     return render(request, "auctions/categories.html", {
         "categoryZip": categoryZip
     })
