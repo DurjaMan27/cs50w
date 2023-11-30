@@ -1,7 +1,7 @@
 {% extends auctions/layout.html %}
 
 {% block body %}
-    <img src="{% static listing.image_url %}" alt="product_image">
+    <img src="{{ listing.image_url }}" alt="product_image">
 
     <h1>{{ listing.product_title }}</h1>
 
