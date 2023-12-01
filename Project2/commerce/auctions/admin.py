@@ -5,10 +5,10 @@ class ListingAdmin(admin.ModelAdmin):
     list_display = ("auction_open", "user", "product_title", "product_description", "product_startingBid", "product_currentBidder",
                     "product_category", "image_url")
 class BidAdmin(admin.ModelAdmin):
-    list_display = ("user", "bid_amount", "product", "product_poster")
+    list_display = ("user", "bid_amount", "product")
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("user", "comment", "product", "product_poster")
+    list_display = ("user", "comment", "product")
 
 # Register your models here.
 admin.site.register(User)
