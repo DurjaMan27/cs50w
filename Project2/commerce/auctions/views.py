@@ -97,12 +97,12 @@ def newlisting(request):
     if request.method == "POST":
         form = NewListingForm(request.POST)
         if form.is_valid():
-            newListing = Listing(auction_open=True, user=request.User, product_title=form.cleaned_data["title"],
+            newListing = Listing(auction_open=True, user=request.user, product_title=form.cleaned_data["title"],
                                     product_description=form.cleaned_data["description"],
                                     product_startingBid=form.cleaned_data["startingBid"],
-                                    product_category=form.cleaned_data["category"],
-                                    image_url=form.cleaned_data["image_url"])
-            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.User, 'product_title':newListing.product_title}))
+                                    product_category=form.cleaned_data["productCategory"],
+                                    image_url=form.cleaned_data["productImage"])
+            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user, 'product_title': newListing.product_title}))
         else:
             return render(request, "auctions/create.html", {
                 "form": form
@@ -177,7 +177,7 @@ def all_listings(request, category):
         listings = Listing.objects.filter(product_category=category)
         return render(request, "auctions/allListings.html", {
             "listings": listings,
-            "category": category
+            "category": category.capitalize()
         })
 
 def categories(request):
