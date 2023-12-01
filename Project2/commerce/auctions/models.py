@@ -20,10 +20,10 @@ class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bid_amount = models.IntegerField()
     product = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    product_poster = models.ForeignKey(User, on_delete=models.CASCADE)
+    #product_poster = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.CharField(max_length=255)
     product = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    product_poster = models.ForeignKey(User, on_delete=models.CASCADE)
+    #product_poster = models.ForeignKey(User, on_delete=models.CASCADE)
