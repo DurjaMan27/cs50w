@@ -10,7 +10,7 @@
         <div>{{ message }}</div>
     {% endif %}
 
-    {& if user.is_authenticated %}
+    {% if user.is_authenticated %}
         <form action="{% url 'newlisting' %}" method="post">
             {% csrf_token %}
             {{ form }}
