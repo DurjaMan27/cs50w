@@ -12,7 +12,7 @@ class Listing(models.Model):
     product_title = models.CharField(max_length=64)
     product_description = models.CharField(max_length=255)
     product_startingBid = models.IntegerField()
-    product_currentBidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidder", blank=True)
+    product_currentBidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidder", blank=True, null=True)
     product_category = models.CharField(max_length=64, blank=True)
     image_url = models.CharField(max_length=255, blank=True)
 
