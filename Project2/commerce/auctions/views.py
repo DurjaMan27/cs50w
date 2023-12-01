@@ -102,7 +102,7 @@ def newlisting(request):
                                     product_startingBid=form.cleaned_data["startingBid"],
                                     product_category=form.cleaned_data["productCategory"],
                                     image_url=form.cleaned_data["productImage"])
-            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user, 'product_title': newListing.product_title}))
+            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user, 'product': newListing.product_title}))
         else:
             return render(request, "auctions/create.html", {
                 "form": form
@@ -113,8 +113,8 @@ def newlisting(request):
     })
 
 def listing(request, username, product):
-    listing = Listing.objects.get(product_title=product, user=username)
-    comments = Comment.objects.get(product=listing, product_poster=username)
+    listing = Listing.objects.filter(product_title=product, user=username)
+    comments = Comment.objects.filter(product=listing, product_poster=username)
     bids = Bid.objects.get(product=listing, product_poster=username)
     if request.method == "POST":
         bidForm = NewBidForm(request.POST, username=username, product=product)
