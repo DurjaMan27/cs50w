@@ -1,9 +1,9 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <li>
+    <ul>
         {% for normal, upper in categoryZip %}
-            <a href="{% url 'all_listings' normal %}"><ul>{{ upper }}</ul></a>
+            <li><a href="{% url 'all_listings' normal %}">{{ upper }}</a></li>
         {% endfor %}
-    </li>
+    </ul>
 {% endblock %}
