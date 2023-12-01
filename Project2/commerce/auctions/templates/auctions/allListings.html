@@ -1,14 +1,14 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>All Active {{ category }} Listings</h2>
+    <h2>All Active "{{ category }}" Listings</h2>
 
     <ul>
         {% for listing in listings %}
             <li>
                 <a href="{% url 'listing' username=listing.user product=listing.product_title %}"><div>
                     <h3>{{ listing.product_title }}</h3>
-                    <img src="{% static listing.image_url %}">
+                    <img src="{{ listing.image_url }}">
                     <p>{{ listing.product_description }}</p>
                     <h4>Current Bid Price: {{ listing.product_startingBid }}</h4>
                 </div></a>
