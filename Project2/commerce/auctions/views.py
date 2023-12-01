@@ -113,9 +113,9 @@ def newlisting(request):
     })
 
 def listing(request, username, product):
-    listing = Listing.objects.filter(product_title=product, user=username)
-    comments = Comment.objects.filter(product=listing, product_poster=username)
-    bids = Bid.objects.get(product=listing, product_poster=username)
+    listing = Listing.objects.filter(product_title=product, id=username)
+    comments = Comment.objects.filter(product=listing)
+    bids = Bid.objects.get(product=listing)
     if request.method == "POST":
         bidForm = NewBidForm(request.POST, username=username, product=product)
         commentForm = NewCommentForm(request.POST, username=username, product=product)
@@ -173,7 +173,6 @@ def all_listings(request, category):
     if category == "all":
         return HttpResponseRedirect(reverse("index"))
     else:
-        #listings = Listing.objects.all(product_category=category)
         listings = Listing.objects.filter(product_category=category)
         return render(request, "auctions/allListings.html", {
             "listings": listings,
@@ -198,4 +197,4 @@ def watchlist(request, listing):
 
 def close_auction(request, listing):
     listing.auction_open = False
-    return HttpResponseRedirect(reverse("all_listings", kwargs={'category': 'all'}))
+    return HttpResponseRedirect(reverse("index"))
