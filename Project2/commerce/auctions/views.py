@@ -113,7 +113,7 @@ def newlisting(request):
     })
 
 def listing(request, username, product):
-    listing = Listing.objects.get(product_title=product, user=username)
+    listing = Listing.objects.get(product_title=product)
 
     comments = Comment.objects.filter(product=listing)
     bids = Bid.objects.get(product=listing)
