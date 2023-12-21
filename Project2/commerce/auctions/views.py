@@ -113,10 +113,8 @@ def newlisting(request):
     })
 
 def listing(request, username, product):
-    try:
-        listing = Listing.objects.get(product_title=product, user=username)
-    except:
-        return message(request, "This page does not exist.")
+    listing = Listing.objects.get(product_title=product, user=username)
+
     comments = Comment.objects.filter(product=listing)
     bids = Bid.objects.get(product=listing)
     if request.method == "POST":
@@ -175,6 +173,8 @@ def listing(request, username, product):
 def all_listings(request, category):
     if category == "all":
         return HttpResponseRedirect(reverse("index"))
+    elif category == "error":
+        return HttpResponseRedirect(reverse("error"))
     else:
         listings = Listing.objects.filter(product_category=category)
         return render(request, "auctions/allListings.html", {
@@ -201,3 +201,7 @@ def watchlist(request, listing):
 def close_auction(request, listing):
     listing.auction_open = False
     return HttpResponseRedirect(reverse("index"))
+
+def error(request):
+    System.out.println("I actually got here")
+    return render(request, "auctions/error.html")
