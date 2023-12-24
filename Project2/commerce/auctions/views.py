@@ -6,6 +6,7 @@ from django.urls import reverse
 from django import forms
 from django.contrib.auth.decorators import login_required
 
+
 from .models import User, Listing, Comment, Bid
 
 category_list = ["all", "fashion", "toys", "electronics", "home", "collectibles", "antiques"]
@@ -97,12 +98,13 @@ def newlisting(request):
     if request.method == "POST":
         form = NewListingForm(request.POST)
         if form.is_valid():
-            newListing = Listing(auction_open=True, user=request.user, product_title=form.cleaned_data["title"],
+            newListing = Listing.objects.create(auction_open=True, user=request.user, product_title=form.cleaned_data["title"],
                                     product_description=form.cleaned_data["description"],
                                     product_startingBid=form.cleaned_data["startingBid"],
                                     product_category=form.cleaned_data["productCategory"],
                                     image_url=form.cleaned_data["productImage"])
-            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user.id, 'product': newListing.listing_id}))
+            #print(newListing)
+            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user, 'product': newListing.listing_id}))
         else:
             return render(request, "auctions/create.html", {
                 "form": form
@@ -114,11 +116,12 @@ def newlisting(request):
 
 def listing(request, username, product):
     print("username:" + username + " product:" + product)
-
     listing = Listing.objects.get(pk=product)
-
     comments = Comment.objects.filter(product=listing)
-    bids = Bid.objects.get(product=listing)
+    bids = Bid.objects.filter(product=listing)
+
+    editTest = listing.user
+
     if request.method == "POST":
         bidForm = NewBidForm(request.POST, username=username, product=product)
         commentForm = NewCommentForm(request.POST, username=username, product=product)
@@ -134,7 +137,7 @@ def listing(request, username, product):
 
                     Bid.objects.delete(user=user, product=listing, product_poster=username)
 
-                    new_bid = Bid(user=user, product=listing, product_poster=username, bid_amount = newBidAmount)
+                    new_bid = Bid.objects.create(user=user, product=listing, product_poster=username, bid_amount = newBidAmount)
                     listing.product_startingBid = newBidAmount
                     listing.product_description = user
 
@@ -142,6 +145,7 @@ def listing(request, username, product):
                     # Reload page
                     return render(request, "auctions/listing.html", {
                         "listing": listing,
+                        "editTest": editTest,
                         "comments": comments,
                         "bids": bids,
                         "bid_form": NewBidForm(),
@@ -150,14 +154,15 @@ def listing(request, username, product):
         elif 'commentSubmit' in request.POST:
             if commentForm.is_valid():
                 newComment = request.POST["comment"]
-                user = request.User
+                user = request.user
 
-                new_bid = Comment(user=user, product=listing, product_poster=username, comment = newComment)
+                new_bid = Comment.objects.create(user=user, product=listing, product_poster=username, comment = newComment)
 
-                comments = Comment.objects.get(product=product, product_poster=username)
+                comments = Comment.objects.filter(product=listing, product_poster=username)
                 # Reload page
                 return render(request, "auctions/listing.html", {
                     "listing": listing,
+                    "editTest": editTest,
                     "comments": comments,
                     "bids": bids,
                     "bid_form": NewBidForm(),
@@ -194,16 +199,23 @@ def categories(request):
     })
 
 @login_required
-def watchlist(request, listing):
-    User.watchlist.add(listing)
+def watchlist(request):
+    user = request.user
     return render(request, "auctions/watchlist.html", {
-        "watchlist": User.watchlist
+        "watchlist": user.watchlist
     })
 
+@login_required
+def addWatchList(request, listing):
+    user = request.user
+    user.watchlist.add(Listing.objects.get(pk=listing))
+    return HttpResponseRedirect(reverse("watchlist"))
+
 def close_auction(request, listing):
-    listing.auction_open = False
+    product = Listing.objects.get(pk=listing)
+    product.auction_open = False
     return HttpResponseRedirect(reverse("index"))
 
 def error(request):
-    System.out.println("I actually got here")
+    print("I actually got here")
     return render(request, "auctions/error.html")
