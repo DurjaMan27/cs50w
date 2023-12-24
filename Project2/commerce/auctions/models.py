@@ -8,6 +8,7 @@ class User(AbstractUser):
 
 class Listing(models.Model):
     auction_open = models.BooleanField(default=True)
+    listing_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_title = models.CharField(max_length=64)
     product_description = models.CharField(max_length=255)
