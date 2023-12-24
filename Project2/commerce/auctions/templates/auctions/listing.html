@@ -1,4 +1,4 @@
-{% extends auctions/layout.html %}
+{% extends "auctions/layout.html" %}
 
 {% block body %}
     <img src="{{ listing.image_url }}" alt="product_image">
@@ -12,10 +12,10 @@
     <a>Posted by: {{ listing.user }}</a>
 
     {% if user.is_authenticated %}
-        {% if user == listing.user %}
-            <a href="{% url 'closeAuction' listing %}"><button>Close Listing</button></a>
+        {% if user == editTest %}
+            <a href="{% url 'close_auction' listing.listing_id %}"><button>Close Listing</button></a>
         {% else %}
-            <a href="{% url 'watchlist' listing %}"><button>Add to Watchlist</button></a>
+            <a href="{% url 'addToWatchList' listing.listing_id %}"><button>Add to Watchlist</button></a>
         {% endif %}
     {% endif %}
 
