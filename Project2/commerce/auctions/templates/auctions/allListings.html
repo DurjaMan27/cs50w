@@ -6,7 +6,7 @@
     <ul>
         {% for listing in listings %}
             <li>
-                <a href="{% url 'listing' username=listing.user product=listing.product_title %}"><div>
+                <a href="{% url 'listing' username=listing.user product=listing.listing_id %}"><div>
                     <h3>{{ listing.product_title }}</h3>
                     <img src="{{ listing.image_url }}">
                     <p>{{ listing.product_description }}</p>

@@ -200,16 +200,18 @@ def categories(request):
 
 @login_required
 def watchlist(request):
-    user = request.user
     return render(request, "auctions/watchlist.html", {
-        "watchlist": user.watchlist.all()
+        "watchlist": request.user.watchlist.all()
     })
 
 @login_required
 def addWatchList(request, listing):
-    user = request.user
-    user.watchlist.add(Listing.objects.get(pk=listing))
+    print("Here step 1")
+    request.user.watchlist.add(Listing.objects.get(pk=listing))
+    print("here step 2")
+    request.user.save()
     return HttpResponseRedirect(reverse("watchlist"))
+    print("here step 3")
 
 def close_auction(request, listing):
     product = Listing.objects.get(pk=listing)
