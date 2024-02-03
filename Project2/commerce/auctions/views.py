@@ -89,7 +89,6 @@ def createListing(request):
                                     startingBid=form.cleaned_data["startingBid"],
                                     category=form.cleaned_data["productCategory"],
                                     image=form.cleaned_data["productImage"])
-            #print(newListing)
             return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user, 'listingID': newListing.listingID}))
         else:
             return render(request, "auctions/createListing.html", {
@@ -102,3 +101,11 @@ def createListing(request):
 
 def listing(request, username, listingID):
     listing = Listing.objects.get(pk=listingID)
+    if listing.currentBid == None:
+        amount = 0
+    else:
+        amount = listing.currentBid.amount
+    return render(request, "auctions/listing.html", {
+        "listing": listing,
+        "amount": amount
+    })
