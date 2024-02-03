@@ -172,6 +172,7 @@ def listing(request, username, product):
         return render(request, "auctions/listing.html", {
             "listing": listing,
             "comments": comments,
+            ""
             "bids": bids,
             "bid_form": NewBidForm(),
             "comment_form": NewCommentForm()
@@ -206,12 +207,10 @@ def watchlist(request):
 
 @login_required
 def addWatchList(request, listing):
-    print("Here step 1")
-    request.user.watchlist.add(Listing.objects.get(pk=listing))
-    print("here step 2")
-    request.user.save()
+    user = request.User
+    listing = Listing.objects.get(pk=listing)
+    user.watchlist.add(listing)
     return HttpResponseRedirect(reverse("watchlist"))
-    print("here step 3")
 
 def close_auction(request, listing):
     product = Listing.objects.get(pk=listing)
