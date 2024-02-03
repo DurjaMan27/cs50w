@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>{{ listing.title }}</h1>
+    <h2>{{ listing.description }}</h2>
+    {% if listing.currentBid == None %}
+        <h4>{{ listing.startingBid }}</h4>
+    {% else %}
+        <h4>{{ amount }}</h4>
+    {% endif %}
+    <button>Add a comment</button>
+    <button>Make a bid</button>
+    {% if user == listing.poster %}
+        <button>End this auction</button>
+    {% endif %}
+{% endblock %}
