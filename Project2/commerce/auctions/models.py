@@ -7,13 +7,13 @@ class User(AbstractUser):
     pass
 
 class Listing(models.Model):
-    CATEGORIES = {
-        "Fashion": "Fashion",
-        "Toys": "Toys",
-        "Electronics": "Electronics",
-        "Home": "Home",
-        "General": "General"
-    }
+    CATEGORIES = (
+        ("General", "General"),
+        ("Fashion", "Fashion"),
+        ("Toys", "Toys"),
+        ("Electronics", "Electronics"),
+        ("Home", "Home"),
+    )
     listingID = models.AutoField(primary_key=True)
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
     datePosted = models.DateTimeField()
@@ -21,7 +21,7 @@ class Listing(models.Model):
     description = models.TextField(max_length=255)
     startingBid = models.PositiveIntegerField()
     currentBid = models.ForeignKey("Bid", on_delete=models.CASCADE, blank=True, related_name="currentBid")
-    category = models.CharField(max_length=64, choices=CATEGORIES, blank=True)
+    category = models.CharField(max_length=15, choices=CATEGORIES, required = True)
     image = models.URLField(blank=True)
 
 class Comment(models.Model):
