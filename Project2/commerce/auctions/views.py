@@ -81,5 +81,24 @@ def register(request):
 
 
 def createListing(request):
+    if request.method == "POST":
+        form = NewListingForm(request.POST)
+        if form.is_valid():
+            newListing = Listing.objects.create(poster=request.user, title=form.cleaned_data["title"],
+                                    description=form.cleaned_data["description"],
+                                    startingBid=form.cleaned_data["startingBid"],
+                                    category=form.cleaned_data["productCategory"],
+                                    image=form.cleaned_data["productImage"])
+            #print(newListing)
+            return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user, 'listingID': newListing.listingID}))
+        else:
+            return render(request, "auctions/createListing.html", {
+                "form": NewListingForm()
+            })
+    else:
+        return render(request, "auctions/createListing.html", {
+            "form": NewListingForm()
+        })
 
-    return ""
+def listing(request, username, listingID):
+    listing = Listing.objects.get(pk=listingID)
