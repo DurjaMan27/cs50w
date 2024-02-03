@@ -16,7 +16,6 @@ class Listing(models.Model):
     )
     listingID = models.AutoField(primary_key=True)
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
-    datePosted = models.DateTimeField()
     title = models.CharField(max_length=64)
     description = models.TextField(max_length=255)
     startingBid = models.PositiveIntegerField()
