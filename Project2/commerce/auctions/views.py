@@ -3,9 +3,23 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
 
 from .models import User, Listing, Comment, Bid
 
+class NewListingForm(forms.Form):
+    CATEGORY_CHOICES = [
+        ('General', 'General'),
+        ('Home', 'Home'),
+        ('Fashion', 'Fashion'),
+        ('Toys', 'Toys'),
+        ('Electronics', 'Electronics')
+    ]
+    title = forms.CharField(label="Product", widget=forms.TextInput(attrs={'placeholder': 'Product Title'}))
+    description = forms.CharField(label="Description", widget=forms.Textarea(attrs={'placeholder':'Product Description'}))
+    startingBid = forms.IntegerField(label="Starting Bid")
+    productCategory = forms.ChoiceField(label="category", choices=CATEGORY_CHOICES)
+    productImage = forms.URLField(label="image", required=False)
 
 def index(request):
     listings = Listing.objects.all()
@@ -64,3 +78,8 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def createListing(request):
+
+    return ""
