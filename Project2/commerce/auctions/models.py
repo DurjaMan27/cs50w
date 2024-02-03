@@ -21,7 +21,7 @@ class Listing(models.Model):
     description = models.TextField(max_length=255)
     startingBid = models.PositiveIntegerField()
     currentBid = models.ForeignKey("Bid", on_delete=models.CASCADE, blank=True, related_name="currentBid")
-    category = models.CharField(max_length=15, choices=CATEGORIES, required = True)
+    category = models.CharField(max_length=15, choices=CATEGORIES)
     image = models.URLField(blank=True)
 
 class Comment(models.Model):
