@@ -3,7 +3,7 @@
 {% block body %}
     <h2>Active Listings</h2>
     {% for listing in listings %}
-        <a href="{% url 'listing' username=listing.poster listingID=listing.listingID}"><div style="border: 1px solid black">
+        <a href="{% url 'listing' username=listing.poster listingID=listing.listingID %}"><div style="border: 1px solid black">
             <h3>{{ listing.title }}</h3>
             <h4>{{ listing.description }}</h4>
             <p>{{ listing.currentPrice }}</p>
