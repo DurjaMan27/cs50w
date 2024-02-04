@@ -5,20 +5,23 @@
     <h2>{{ listing.description }}</h2>
     <h4>{{ listing.currentPrice }}</h4>
     <img src="{{ listing.image}}" height="500" width="500">
-    <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
-        {% csrf_token %}
-        {{ commentForm }}
-        <input type="submit">
-    </form>
+    {% if user.is_authenticated %}
+        <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
+            {% csrf_token %}
+            {{ commentForm }}
+            <input type="submit">
+        </form>
+    {% endif %}
     {% if user == listing.poster %}
         <button>End this auction</button>
-    {% else if user.is_authenticated %}
+    {% elif user.is_authenticated %}
         <form action="{% url 'makeBid' %}">
             <input type="number" min="{{ listing.currentPrice }}">
             <button type="submit">Make Bid</button>
         </form>
         <a href="{% url 'watchlist' user}"><button>Add to Watchlist</button></a>
     {% endif %}
+    <h2>Comments</h2>
     {% for comment in comments %}
         <p>{{ comment.comment }}</p>
     {% endfor %}
