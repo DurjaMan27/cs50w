@@ -140,12 +140,14 @@ def listing(request, username, listingID):
     else:
         user = User.objects.get(username=username)
         comments = Comment.objects.filter(listing=listingID)
+        bid = Bid.objects.get(listing=listingID)
         return render(request, "auctions/listing.html", {
             "listing": listing,
             'otherUser': user,
             'commentForm': NewCommentForm(),
             'bidForm': NewBidForm(),
-            'comments': comments
+            'comments': comments,
+            'bid': bid
         })
 
 def makeBid(request, amount, listingID):
