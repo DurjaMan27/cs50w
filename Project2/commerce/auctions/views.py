@@ -176,3 +176,7 @@ def categorySpecific(request, category):
         "category": category,
         'length': len(listings)
     })
+
+def closeListing(request, listingID):
+    listing = Listing.objects.get(pk=listingID)
+    return HttpResponseRedirect(reverse('index'))
