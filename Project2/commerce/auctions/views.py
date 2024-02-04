@@ -28,7 +28,7 @@ class NewBidForm(forms.Form):
     bid = forms.IntegerField(label="Bid")
 
 def index(request):
-    listings = Listing.objects.all()
+    listings = Listing.objects.filter(auctionOpen=True)
     return render(request, "auctions/index.html", {
         'listings': listings
     })
@@ -170,7 +170,7 @@ def category(request):
     })
 
 def categorySpecific(request, category):
-    listings = Listing.objects.filter(category=category)
+    listings = Listing.objects.filter(category=category, auctionOpen=True)
     return render(request, "auctions/category.html", {
         'listings': listings,
         "category": category,
