@@ -162,7 +162,7 @@ def makeBid(request, amount, listingID):
 def addWatchList(request, listingID):
     listing = Listing.objects.get(pk=listingID)
     user = request.user
-    if listing not in request.user.watchList:
+    if listing not in request.user.watchList.all():
         user.watchList.add(listing)
     return HttpResponseRedirect(reverse("watchlist"))
 
