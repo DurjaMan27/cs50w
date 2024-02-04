@@ -20,6 +20,7 @@ class Listing(models.Model):
     description = models.TextField(max_length=255)
     category = models.CharField(max_length=15, choices=CATEGORIES)
     image = models.URLField(blank=True)
+    currentPrice = models.PositiveIntegerField()
 
 class Comment(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)

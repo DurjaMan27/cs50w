@@ -17,7 +17,7 @@ class NewListingForm(forms.Form):
     ]
     title = forms.CharField(label="Product", widget=forms.TextInput(attrs={'placeholder': 'Product Title'}))
     description = forms.CharField(label="Description", widget=forms.Textarea(attrs={'placeholder':'Product Description'}))
-    startingBid = forms.IntegerField(label="Starting Bid")
+    amount = forms.IntegerField(label="Starting Bid")
     productCategory = forms.ChoiceField(label="category", choices=CATEGORY_CHOICES)
     productImage = forms.URLField(label="image", required=False)
 
@@ -85,10 +85,11 @@ def createListing(request):
         form = NewListingForm(request.POST)
         if form.is_valid():
             newListing = Listing.objects.create(poster=request.user, title=form.cleaned_data["title"],
+                                    currentPrice=form.cleaned_data["amount"],
                                     description=form.cleaned_data["description"],
-                                    startingBid=form.cleaned_data["startingBid"],
                                     category=form.cleaned_data["productCategory"],
                                     image=form.cleaned_data["productImage"])
+            newBid = Bid.objects.create(listing=newListing, bidder=request.user, amount=form.cleaned_data["amount"])
             return HttpResponseRedirect(reverse("listing", kwargs={'username': request.user, 'listingID': newListing.listingID}))
         else:
             return render(request, "auctions/createListing.html", {
@@ -102,12 +103,7 @@ def createListing(request):
 def listing(request, username, listingID):
     listing = Listing.objects.get(pk=listingID)
     user = User.objects.get(username=username)
-    if listing.currentBid == None:
-        amount = 0
-    else:
-        amount = listing.currentBid.amount
     return render(request, "auctions/listing.html", {
         "listing": listing,
-        "amount": amount,
         'user': user
     })
