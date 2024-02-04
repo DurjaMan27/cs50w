@@ -79,6 +79,12 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+def error(request, listingID):
+    listing = Listing.objects.get(pk=listingID)
+    return render(request, "auctions/error.html", {
+        'listing': listing,
+        'otherUser': listing.poster
+    })
 
 def createListing(request):
     if request.method == "POST":
@@ -107,3 +113,14 @@ def listing(request, username, listingID):
         "listing": listing,
         'user': user
     })
+
+def makeBid(request, amount, listingID):
+    listing = Listing.objects.get(pk=listingID)
+    if listing.currentPrice >= amount:
+        return HttpResponseRedirect(reverse("error", kwargs={'listingID': listing.listingID}))
+    else:
+        Bid.objects.filter(listing=Listing.objects.get(pk=listingID)).delete()
+        Bid.objects.create(amount=amount, listing=Listing.objects.get(pk=listingID),
+                                    bidder=request.user)
+        Listing.objects.get(pk=listingID).update(currentPrice=amount)
+        return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
