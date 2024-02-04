@@ -21,6 +21,9 @@ class NewListingForm(forms.Form):
     productCategory = forms.ChoiceField(label="category", choices=CATEGORY_CHOICES)
     productImage = forms.URLField(label="image", required=False)
 
+class NewCommentForm(forms.form):
+    comment = forms.TextField(label="Comment", widget=forms.TextInput(attrs={'placeholder': 'Comment Here'}))
+
 def index(request):
     listings = Listing.objects.all()
     return render(request, "auctions/index.html", {
@@ -107,12 +110,23 @@ def createListing(request):
         })
 
 def listing(request, username, listingID):
-    listing = Listing.objects.get(pk=listingID)
-    user = User.objects.get(username=username)
-    return render(request, "auctions/listing.html", {
-        "listing": listing,
-        'user': user
-    })
+    if request.method == "POST":
+        form = NewCommentForm(request.POST)
+        if(form.is_valid()):
+            comment = Comment.objects.create(listing=Listing.objects.get(pk=listingID),
+                                            author=request.user, comment=form.cleaned_data["comment"])
+            return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
+        else:
+            return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
+    else:
+        listing = Listing.objects.get(pk=listingID)
+        user = User.objects.get(username=username)
+        comments = Comment.objects.filter(listing=listingID)
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            'user': user,
+            'comments': comments
+        })
 
 def makeBid(request, amount, listingID):
     listing = Listing.objects.get(pk=listingID)

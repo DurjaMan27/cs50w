@@ -14,4 +14,7 @@
             <button type="submit">Make Bid</button>
         </form>
     {% endif %}
+    {% for comment in comments %}
+        <p>{{ comment.comment }}</p>
+    {% endfor %}
 {% endblock %}
