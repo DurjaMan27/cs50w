@@ -110,6 +110,7 @@ def createListing(request):
         })
 
 def listing(request, username, listingID):
+    listing = Listing.objects.get(pk=listingID)
     if request.method == "POST":
         form = NewCommentForm(request.POST)
         if(form.is_valid()):
@@ -119,7 +120,6 @@ def listing(request, username, listingID):
         else:
             return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
     else:
-        listing = Listing.objects.get(pk=listingID)
         user = User.objects.get(username=username)
         comments = Comment.objects.filter(listing=listingID)
         return render(request, "auctions/listing.html", {
