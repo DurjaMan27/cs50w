@@ -124,7 +124,7 @@ def listing(request, username, listingID):
         comments = Comment.objects.filter(listing=listingID)
         return render(request, "auctions/listing.html", {
             "listing": listing,
-            'user': user,
+            'otherUser': user,
             'commentForm': NewCommentForm(),
             'comments': comments
         })

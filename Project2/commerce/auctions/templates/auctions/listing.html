@@ -5,7 +5,7 @@
     <h2>{{ listing.description }}</h2>
     <h4>{{ listing.currentPrice }}</h4>
     <img src="{{ listing.image}}" height="500" width="500">
-    <form action="{% url 'listing' username=user listingID=listing.listingID %}" method="post">
+    <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
         {% csrf_token %}
         {{ commentForm }}
         <input type="submit">
