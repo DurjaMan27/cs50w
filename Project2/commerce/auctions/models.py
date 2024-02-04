@@ -18,8 +18,6 @@ class Listing(models.Model):
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     description = models.TextField(max_length=255)
-    startingBid = models.PositiveIntegerField()
-    currentBid = models.ForeignKey("Bid", on_delete=models.CASCADE, blank=True, related_name="currentBid")
     category = models.CharField(max_length=15, choices=CATEGORIES)
     image = models.URLField(blank=True)
 
