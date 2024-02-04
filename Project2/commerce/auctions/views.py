@@ -22,7 +22,7 @@ class NewListingForm(forms.Form):
     productImage = forms.URLField(label="image", required=False)
 
 class NewCommentForm(forms.Form):
-    comment = forms.TextField(label="Comment", widget=forms.TextInput(attrs={'placeholder': 'Comment Here'}))
+    comment = forms.CharField(label="Comment", widget=forms.TextInput(attrs={'placeholder': 'Comment Here'}))
 
 def index(request):
     listings = Listing.objects.all()
