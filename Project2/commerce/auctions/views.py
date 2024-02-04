@@ -25,7 +25,7 @@ class NewCommentForm(forms.Form):
     comment = forms.CharField(label="Comment", widget=forms.TextInput(attrs={'placeholder': 'Comment Here'}))
 
 class NewBidForm(forms.Form):
-    bid = forms.PositiveIntegerField(label="Bid")
+    bid = forms.IntegerField(label="Bid")
 
 def index(request):
     listings = Listing.objects.all()
@@ -118,13 +118,14 @@ def listing(request, username, listingID):
         if 'bid' in request.POST:
             bidForm = NewBidForm(request.POST)
             if bidForm.is_valid():
-                if bidForm.cleaned_data['bid'] <= listing.currentPrice():
+                if bidForm.cleaned_data['bid'] <= listing.currentPrice:
                     return HttpResponseRedirect(reverse("error", kwargs={'listingID': listing.listingID}))
                 else:
                     Bid.objects.filter(listing=Listing.objects.get(pk=listingID)).delete()
                     Bid.objects.create(amount=bidForm.cleaned_data['bid'], listing=Listing.objects.get(pk=listingID),
                                                 bidder=request.user)
-                    Listing.objects.get(pk=listingID).update(currentPrice=bidForm.cleaned_data['bid'])
+                    Listing.objects.filter(pk=listingID).update(currentPrice=bidForm.cleaned_data['bid'])
+                    #listing.currentPrice = bidForm.cleaned_data['bid']
                     return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
             else:
                 return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
