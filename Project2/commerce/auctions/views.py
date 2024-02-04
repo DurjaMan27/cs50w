@@ -24,6 +24,9 @@ class NewListingForm(forms.Form):
 class NewCommentForm(forms.Form):
     comment = forms.CharField(label="Comment", widget=forms.TextInput(attrs={'placeholder': 'Comment Here'}))
 
+class NewBidForm(forms.Form):
+    bid = forms.PositiveIntegerField(label="Bid")
+
 def index(request):
     listings = Listing.objects.all()
     return render(request, "auctions/index.html", {
@@ -112,13 +115,27 @@ def createListing(request):
 def listing(request, username, listingID):
     listing = Listing.objects.get(pk=listingID)
     if request.method == "POST":
-        form = NewCommentForm(request.POST)
-        if(form.is_valid()):
-            comment = Comment.objects.create(listing=Listing.objects.get(pk=listingID),
-                                            author=request.user, comment=form.cleaned_data["comment"])
-            return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
-        else:
-            return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
+        if 'bid' in request.POST:
+            bidForm = NewBidForm(request.POST)
+            if bidForm.is_valid():
+                if bidForm.cleaned_data['bid'] <= listing.currentPrice():
+                    return HttpResponseRedirect(reverse("error", kwargs={'listingID': listing.listingID}))
+                else:
+                    Bid.objects.filter(listing=Listing.objects.get(pk=listingID)).delete()
+                    Bid.objects.create(amount=bidForm.cleaned_data['bid'], listing=Listing.objects.get(pk=listingID),
+                                                bidder=request.user)
+                    Listing.objects.get(pk=listingID).update(currentPrice=bidForm.cleaned_data['bid'])
+                    return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
+            else:
+                return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
+        if 'comment' in request.POST:
+            commentForm = NewCommentForm(request.POST)
+            if commentForm.is_valid():
+                comment = Comment.objects.create(listing=Listing.objects.get(pk=listingID),
+                                            author=request.user, comment=commentForm.cleaned_data["comment"])
+                return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
+            else:
+                return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
     else:
         user = User.objects.get(username=username)
         comments = Comment.objects.filter(listing=listingID)
@@ -126,6 +143,7 @@ def listing(request, username, listingID):
             "listing": listing,
             'otherUser': user,
             'commentForm': NewCommentForm(),
+            'bidForm': NewBidForm(),
             'comments': comments
         })
 

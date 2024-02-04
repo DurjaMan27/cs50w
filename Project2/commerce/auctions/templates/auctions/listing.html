@@ -15,9 +15,10 @@
     {% if user == listing.poster %}
         <button>End this auction</button>
     {% elif user.is_authenticated %}
-        <form action="{% url 'makeBid' %}">
-            <input type="number" min="{{ listing.currentPrice }}">
-            <button type="submit">Make Bid</button>
+        <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
+            {% csrf_token %}
+            {{ bidForm }}
+            <input type="submit">
         </form>
         <a href="{% url 'watchlist' user}"><button>Add to Watchlist</button></a>
     {% endif %}
