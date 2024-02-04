@@ -21,6 +21,7 @@ class Listing(models.Model):
     category = models.CharField(max_length=15, choices=CATEGORIES)
     image = models.URLField(blank=True)
     currentPrice = models.PositiveIntegerField()
+    auctionOpen = models.BooleanField(default=True)
 
 class Comment(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
