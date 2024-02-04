@@ -150,17 +150,6 @@ def listing(request, username, listingID):
             'bid': bid
         })
 
-def makeBid(request, amount, listingID):
-    listing = Listing.objects.get(pk=listingID)
-    if listing.currentPrice >= amount:
-        return HttpResponseRedirect(reverse("error", kwargs={'listingID': listing.listingID}))
-    else:
-        Bid.objects.filter(listing=Listing.objects.get(pk=listingID)).delete()
-        Bid.objects.create(amount=amount, listing=Listing.objects.get(pk=listingID),
-                                    bidder=request.user)
-        Listing.objects.get(pk=listingID).update(currentPrice=amount)
-        return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
-
 def addWatchList(request, listingID):
     listing = Listing.objects.get(pk=listingID)
     user = request.user
@@ -172,4 +161,16 @@ def watchList(request):
     user = request.user
     return render(request, 'auctions/watchlist.html', {
         'watchlist': user.watchList.all()
+    })
+
+def category(request):
+    categories = ["All", "General", "Fashion", "Toys", "Electronics", "Home"]
+    return render(request, 'auctions/categoryList.html', {
+        'catList': categories
+    })
+
+def categorySpecific(request, category):
+    listings = Listing.objects.filter(category=category)
+    return render(request, "auctions/category.html", {
+        'listings': listings
     })
