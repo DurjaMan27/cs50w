@@ -3,7 +3,9 @@
 {% block body %}
     <h2>Every Listing Category</h2>
     <ul>
-        <a href="{% url 'categorySpecific' }"><li>General</li></a>
-
+        <a href="{% url 'index' %}"><li>All Categories</li></a>
+        {% for category in catList %}
+            <a href="{% url 'categorySpecific' {{category }} %}"><li>{{ category }}</li></a>
+        {% endfor %}
     </ul>
 {% endblock %}

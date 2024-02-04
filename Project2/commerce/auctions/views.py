@@ -164,7 +164,7 @@ def watchList(request):
     })
 
 def category(request):
-    categories = ["All", "General", "Fashion", "Toys", "Electronics", "Home"]
+    categories = ["General", "Fashion", "Toys", "Electronics", "Home"]
     return render(request, 'auctions/categoryList.html', {
         'catList': categories
     })
