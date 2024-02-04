@@ -3,8 +3,12 @@
 {% block body %}
     <h1>{{ listing.title }}</h1>
     <h2>{{ listing.description }}</h2>
-    <h4>Current price: ${{ listing.currentPrice }}, bid by @<strong>{{ bid.bidder }}</strong></h4>
-    <img src="{{ listing.image}}" height="500" width="500">
+    {% if bid.bidder == listing.poster %}
+        <h4>Current price: ${{ listing.currentPrice }}, <strong>no bidders yet</strong>.</h4>
+    {% else %}
+        <h4>Current price: ${{ listing.currentPrice }}, bid by @<strong>{{ bid.bidder }}</strong></h4>
+    {% endif %}
+    <img src="{{ listing.image }}" height="500" width="500">
     {% if user.is_authenticated %}
         <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
             {% csrf_token %}
