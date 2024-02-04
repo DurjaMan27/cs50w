@@ -3,11 +3,7 @@
 {% block body %}
     <h1>{{ listing.title }}</h1>
     <h2>{{ listing.description }}</h2>
-    {% if listing.currentBid == None %}
-        <h4>{{ listing.startingBid }}</h4>
-    {% else %}
-        <h4>{{ amount }}</h4>
-    {% endif %}
+    <h4>{{ listing.currentPrice }}</h4>
     <button>Add a comment</button>
     <button>Make a bid</button>
     {% if user == listing.poster %}
