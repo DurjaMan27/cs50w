@@ -101,11 +101,13 @@ def createListing(request):
 
 def listing(request, username, listingID):
     listing = Listing.objects.get(pk=listingID)
+    user = User.objects.get(username=username)
     if listing.currentBid == None:
         amount = 0
     else:
         amount = listing.currentBid.amount
     return render(request, "auctions/listing.html", {
         "listing": listing,
-        "amount": amount
+        "amount": amount,
+        'user': user
     })
