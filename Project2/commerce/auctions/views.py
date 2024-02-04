@@ -172,5 +172,7 @@ def category(request):
 def categorySpecific(request, category):
     listings = Listing.objects.filter(category=category)
     return render(request, "auctions/category.html", {
-        'listings': listings
+        'listings': listings,
+        "category": category,
+        'length': len(listings)
     })
