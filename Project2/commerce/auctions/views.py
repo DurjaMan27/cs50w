@@ -161,12 +161,11 @@ def makeBid(request, amount, listingID):
 
 def addWatchList(request, listingID):
     listing = Listing.objects.get(pk=listingID)
-    user = request.user
-    user.watchList.add(listing)
-    return HttpResponseRedirect(reverse("watchlist", kwargs={'username':user}))
+    request.user.watchList.add(listing)
+    return HttpResponseRedirect(reverse("watchlist", kwargs={'username':request.user}))
 
 def watchList(request):
     user = request.user
-    return render(request, 'watchlist.html', {
+    return render(request, 'auctions/watchlist.html', {
         'watchlist': user.watchList
     })
