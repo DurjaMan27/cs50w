@@ -9,25 +9,35 @@
         <h4>Current price: ${{ listing.currentPrice }}, bid by @<strong>{{ bid.bidder }}</strong></h4>
     {% endif %}
     <img src="{{ listing.image }}" height="500" width="500">
-    {% if user.is_authenticated %}
-        <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
-            {% csrf_token %}
-            {{ commentForm }}
-            <input type="submit">
-        </form>
+    {% if listing.auctionOpen == False %}
+        {% if otherUser == listing.poster %}
+            <h2>You have closed this auction.</h2>
+        {% elif otherUser == bid.bidder %}
+            <h2>Congrats, you have won this auction!</h2>
+        {% else %}
+            <h2>Sorry, this auction has been closed, another user has won!</h2>
+        {% endif %}
+    {% else %}
+        {% if user.is_authenticated %}
+            <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
+                {% csrf_token %}
+                {{ commentForm }}
+                <input type="submit">
+            </form>
+        {% endif %}
+        {% if user == listing.poster %}
+            <button>End this auction</button>
+        {% elif user.is_authenticated %}
+            <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
+                {% csrf_token %}
+                {{ bidForm }}
+                <input type="submit">
+            </form>
+            <a href="{% url 'addWatchList' listing.listingID %}"><button>Add to Watchlist</button></a>
+        {% endif %}
+        <h2>Comments</h2>
+        {% for comment in comments %}
+            <p>{{ comment.comment }}</p>
+        {% endfor %}
     {% endif %}
-    {% if user == listing.poster %}
-        <button>End this auction</button>
-    {% elif user.is_authenticated %}
-        <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
-            {% csrf_token %}
-            {{ bidForm }}
-            <input type="submit">
-        </form>
-        <a href="{% url 'addWatchList' listing.listingID %}"><button>Add to Watchlist</button></a>
-    {% endif %}
-    <h2>Comments</h2>
-    {% for comment in comments %}
-        <p>{{ comment.comment }}</p>
-    {% endfor %}
 {% endblock %}

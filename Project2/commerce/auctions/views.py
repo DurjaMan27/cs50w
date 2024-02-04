@@ -125,7 +125,8 @@ def listing(request, username, listingID):
                     Bid.objects.create(amount=bidForm.cleaned_data['bid'], listing=Listing.objects.get(pk=listingID),
                                                 bidder=request.user)
                     Listing.objects.filter(pk=listingID).update(currentPrice=bidForm.cleaned_data['bid'])
-                    #listing.currentPrice = bidForm.cleaned_data['bid']
+                    if listing not in request.user.watchList.all():
+                        user.watchList.add(listing)
                     return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
             else:
                 return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
@@ -178,5 +179,5 @@ def categorySpecific(request, category):
     })
 
 def closeListing(request, listingID):
-    listing = Listing.objects.get(pk=listingID)
+    Listing.objects.filter(pk=listingID).update(auctionOpen=False)
     return HttpResponseRedirect(reverse('index'))
