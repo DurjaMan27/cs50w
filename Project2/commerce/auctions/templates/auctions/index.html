@@ -6,7 +6,7 @@
         <a href="{% url 'listing' username=listing.poster listingID=listing.listingID %}"><div style="border: 1px solid black">
             <h3>{{ listing.title }}</h3>
             <h4>{{ listing.description }}</h4>
-            <p>{{ listing.currentPrice }}</p>
+            <p>${{ listing.currentPrice }}</p>
             <img src="{{ listing.image }}" width="500" height="500">
         </div></a>
     {% endfor %}
