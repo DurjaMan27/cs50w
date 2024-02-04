@@ -126,7 +126,7 @@ def listing(request, username, listingID):
                                                 bidder=request.user)
                     Listing.objects.filter(pk=listingID).update(currentPrice=bidForm.cleaned_data['bid'])
                     if listing not in request.user.watchList.all():
-                        user.watchList.add(listing)
+                        request.user.watchList.add(listing)
                     return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
             else:
                 return HttpResponseRedirect(reverse("listing", kwargs={'username': listing.poster, 'listingID': listingID}))
