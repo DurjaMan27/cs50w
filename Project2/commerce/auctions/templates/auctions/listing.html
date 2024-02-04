@@ -25,7 +25,7 @@
                 <input type="submit">
             </form>
         {% endif %}
-        {% if user == listing.poster %}]
+        {% if user == listing.poster %}
             <a href="{% url 'closeListing' listing.listingID %}"><button>End this auction.</button></a>
         {% elif user.is_authenticated %}
             <form action="{% url 'listing' username=otherUser listingID=listing.listingID %}" method="post">
