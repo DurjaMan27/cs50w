@@ -21,7 +21,7 @@ class NewListingForm(forms.Form):
     productCategory = forms.ChoiceField(label="category", choices=CATEGORY_CHOICES)
     productImage = forms.URLField(label="image", required=False)
 
-class NewCommentForm(forms.form):
+class NewCommentForm(forms.Form):
     comment = forms.TextField(label="Comment", widget=forms.TextInput(attrs={'placeholder': 'Comment Here'}))
 
 def index(request):
