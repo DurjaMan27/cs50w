@@ -20,7 +20,7 @@
             {{ bidForm }}
             <input type="submit">
         </form>
-        <a href="{% url 'watchlist' user}"><button>Add to Watchlist</button></a>
+        <a href="{% url 'watchlist' %}"><button>Add to Watchlist</button></a>
     {% endif %}
     <h2>Comments</h2>
     {% for comment in comments %}

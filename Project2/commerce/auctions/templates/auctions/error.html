@@ -2,5 +2,5 @@
 
 {% block body %}
     <h1>Please enter a bid amount that is greater than the current price.</h1>
-    <a href="{% url 'listing' otherUser listing.listingID}"><button>Return to the listing</button></a>
+    <a href="{% url 'listing' username=otherUser listingID=listing.listingID %}"><button>Return to the listing</button></a>
 {% endblock %}
