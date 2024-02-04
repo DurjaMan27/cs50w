@@ -5,7 +5,11 @@
     <h2>{{ listing.description }}</h2>
     <h4>{{ listing.currentPrice }}</h4>
     <img src="{{ listing.image}}" height="500" width="500">
-    <button>Add a comment</button>
+    <form action="{% url 'listing' user listing.listingID %}" method="post">
+        {% csrf_token %}
+        {{ commentForm }}
+        <input type="submit">
+    </form>
     {% if user == listing.poster %}
         <button>End this auction</button>
     {% else %}

@@ -125,6 +125,7 @@ def listing(request, username, listingID):
         return render(request, "auctions/listing.html", {
             "listing": listing,
             'user': user,
+            'commentForm': NewCommentForm(),
             'comments': comments
         })
 
