@@ -12,11 +12,12 @@
     </form>
     {% if user == listing.poster %}
         <button>End this auction</button>
-    {% else %}
+    {% else if user.is_authenticated %}
         <form action="{% url 'makeBid' %}">
             <input type="number" min="{{ listing.currentPrice }}">
             <button type="submit">Make Bid</button>
         </form>
+        <a href="{% url 'watchlist' user}"><button>Add to Watchlist</button></a>
     {% endif %}
     {% for comment in comments %}
         <p>{{ comment.comment }}</p>
