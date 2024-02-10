@@ -53,6 +53,7 @@ function load_mailbox(mailbox) {
   .then(response => response.json())
   .then(emails => {
     console.log(emails);
+    console.log("i am here");
     emails.forEach(email => {
       const sender = document.createElement('h1');
       sender.innerHTML = email.sender;
