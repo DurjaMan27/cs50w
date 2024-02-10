@@ -35,19 +35,13 @@ function load_mailbox(mailbox) {
   .then(response => response.json())
   .then(emails => {
     emails.forEach(email => {
-      const id = email.id;
-
       const sender = document.createElement('h1');
       sender.innerHTML = email.sender;
       sender.setAttribute('class', 'email-sender');
 
-      const recipients = email.recipients;
-
       const subject = document.createElement('h2');
       subject.innerHTML = email.subject;
       subject.setAttribute('class', 'email-subject');
-
-      const body = email.body;
 
       const timestamp = document.createElement('p');
       timestamp.innerHTML = email.timestamp;
@@ -60,9 +54,8 @@ function load_mailbox(mailbox) {
 
       const url = document.createElement('a').innerHTML = div;
       url.setAttribute('href', '');
-      const li = document.createElement('li').append(url);
-
-      div.innerHTML = document.querySelector("#emails-view").append = div;
+      const li = document.createElement('li').innerHTML = url;
+      document.querySelector('#emails').append(li);
     })
   })
 }
