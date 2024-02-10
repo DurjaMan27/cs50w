@@ -20,6 +20,24 @@ function compose_email() {
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
+
+  document.querySelector('#compose-form').onsubmit = () => {
+    fetch('/emails', {
+      method: 'POST',
+      body: JSON.stringify({
+          recipients: document.querySelector("compose-recipients").value,
+          subject: document.querySelector('#compose-subject').value,
+          body: document.querySelector('#compose-body').value
+      })
+    })
+    .then(response => response.json())
+    .then(result => {
+        // Print result
+        console.log(result);
+    });
+  };
+
+  load_mailbox('inbox');
 }
 
 function load_mailbox(mailbox) {
@@ -34,6 +52,7 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
+    console.log(emails);
     emails.forEach(email => {
       const sender = document.createElement('h1');
       sender.innerHTML = email.sender;
@@ -56,6 +75,6 @@ function load_mailbox(mailbox) {
       url.setAttribute('href', '');
       const li = document.createElement('li').innerHTML = url;
       document.querySelector('#emails').append(li);
-    })
+    });
   })
 }
