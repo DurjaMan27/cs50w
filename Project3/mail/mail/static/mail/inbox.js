@@ -59,7 +59,7 @@ function compose_email(id, action) {
         // Print result
         console.log(result);
     });
-    load_mailbox('inbox');
+    load_mailbox('sent');
   };
 }
 
@@ -80,7 +80,14 @@ function load_mailbox(mailbox) {
     emails.forEach(email => {
       let div = document.createElement('div');
       div.className = 'email';
+
+      if(email['read']) {
+        div.style.backgroundColor = 'grey';
+      } else {
+        div.style.backgroundColor = 'white';
+      }
       div.style.border = '1px solid black';
+
       div.innerHTML = `
         <h2>${email['sender']} - ${email['subject']}</h2>
         <p>${email['timestamp']}</p>
@@ -92,12 +99,16 @@ function load_mailbox(mailbox) {
 }
 
 function load_email(id) {
-
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#single-email-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
 
-  fetch(`/emails/${id}`)
+  fetch(`/emails/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+        read: true
+    })
+  })
   .then(response => response.json())
   .then(email => {
       let div = document.createElement('div');
@@ -105,7 +116,7 @@ function load_email(id) {
 
       div.style.border = '1px solid black';
       div.innerHTML = `
-        <h1>${email['sender']}</h1>
+        <h2>${email['sender']}</h2>
         <h2>${email['subject']}</h2>
         <p>${email['body']}</p>
         <p>${email['timestamp']}</p>
@@ -115,6 +126,41 @@ function load_email(id) {
 
       document.querySelector('#reply').addEventListener('click', () => compose_email(id, 'reply'));
       document.querySelector('#replyAll').addEventListener('click', () => compose_email(id, 'replyAll'));
-      document.querySelector('#archive');
+
+      if(email['archived']) {
+        document.querySelector('#archive').style.display = 'none';
+        document.querySelector('#unarchive').style.display = 'block';
+        document.querySelector('#unarchive').addEventListener('click', () => unarchive_email(id));
+      } else {
+        document.querySelector('#archive').style.display = 'block';
+        document.querySelector('#unarchive').style.display = 'none';
+        document.querySelector('#archive').addEventListener('click', () => archive_email(id));
+      }
   });
+}
+
+function archive_email(id) {
+  fetch(`/emails/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+        archived: true
+    })
+  })
+  .then(response => response.json())
+  .then(email => {
+    load_mailbox('inbox');
+  })
+}
+
+function unarchive_email(id) {
+  fetch(`/emails/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      archived: false
+    })
+  })
+  .then(response => response.json())
+  .then(email => {
+    load_mailbox('inbox');
+  })
 }
