@@ -76,13 +76,12 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log(emails);
     emails.forEach(email => {
       let div = document.createElement('div');
       div.className = 'email';
 
       if(email['read']) {
-        div.style.backgroundColor = 'grey';
+        div.style.backgroundColor = '#dadee6';
       } else {
         div.style.backgroundColor = 'white';
       }
