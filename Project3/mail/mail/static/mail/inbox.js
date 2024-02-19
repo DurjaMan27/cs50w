@@ -4,22 +4,54 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', compose_email);
+  document.querySelector('#compose').addEventListener('click', () => compose_email(1, 'compose'));
 
   // By default, load the inbox
   load_mailbox('inbox');
 });
 
-function compose_email() {
+function compose_email(id, action) {
 
-  // Show compose view and hide other views
-  document.querySelector('#emails-view').style.display = 'none';
-  document.querySelector('#compose-view').style.display = 'block';
+  if(action == 'compose') {
+    // Show compose view and hide other views
+    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#single-email-view').style.display = 'none';
+    document.querySelector('#compose-view').style.display = 'block';
 
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
+    // Clear out composition fields
+    document.querySelector('#compose-recipients').value = '';
+    document.querySelector('#compose-recipients').disabled = false;
+    document.querySelector('#compose-subject').value = '';
+    document.querySelector('#compose-body').value = '';
+  } else {
+    let recipient;
+    let subject;
+    let outsideEmail;
+
+    fetch(`/emails/${id}`)
+    .then(response => response.json())
+    .then(email => {
+        outsideEmail = email;
+    });
+
+    console.log(outsideEmail);
+
+    if(action == 'reply') {
+    // Show compose view and hide other views
+    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#single-email-view').style.display = 'block';
+    document.querySelector('#compose-view').style.display = 'block';
+
+    // Clear out composition fields
+    document.querySelector('#compose-recipients').value = recipient;
+    document.querySelector('#compose-recipients').disabled = true;
+    document.querySelector('#compose-subject').value = `RE: ${subject}`;
+    document.querySelector('#compose-body').value = '';
+
+    } else if(action == 'replyAll') {
+      console.log('not implemented yet');
+    }
+  }
 
   document.querySelector('#compose-form').onsubmit = () => {
     fetch('/emails', {
@@ -35,15 +67,15 @@ function compose_email() {
         // Print result
         console.log(result);
     });
+    load_mailbox('inbox');
   };
-
-  load_mailbox('inbox');
 }
 
 function load_mailbox(mailbox) {
 
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#single-email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
@@ -53,29 +85,46 @@ function load_mailbox(mailbox) {
   .then(response => response.json())
   .then(emails => {
     console.log(emails);
-    console.log("i am here");
     emails.forEach(email => {
-      const sender = document.createElement('h1');
-      sender.innerHTML = email.sender;
-      sender.setAttribute('class', 'email-sender');
-
-      const subject = document.createElement('h2');
-      subject.innerHTML = email.subject;
-      subject.setAttribute('class', 'email-subject');
-
-      const timestamp = document.createElement('p');
-      timestamp.innerHTML = email.timestamp;
-      timestamp.setAttribute('class', 'email-timestamp');
-
-      const div = document.createElement('div');
-      div.appendChild(sender)
-      div.appendChild(subject);
-      div.appendChild(timestamp);
-
-      const url = document.createElement('a').innerHTML = div;
-      url.setAttribute('href', '');
-      const li = document.createElement('li').innerHTML = url;
-      document.querySelector('#emails').append(li);
+      let div = document.createElement('div');
+      div.className = 'email';
+      div.style.border = '1px solid black';
+      div.innerHTML = `
+        <h2>${email['sender']} - ${email['subject']}</h2>
+        <p>${email['timestamp']}</p>
+      `;
+      console.log(div);
+      document.querySelector('#emails-view').appendChild(div);
+      div.addEventListener('click', () => load_email(email['id']));
     });
   })
+}
+
+function load_email(id) {
+
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#single-email-view').style.display = 'block';
+  document.querySelector('#compose-view').style.display = 'none';
+
+  fetch(`/emails/${id}`)
+  .then(response => response.json())
+  .then(email => {
+      console.log(email);
+      let div = document.createElement('div');
+      div.className = 'full-email';
+
+      div.style.border = '1px solid black';
+      div.innerHTML = `
+        <h1>${email['sender']}</h1>
+        <h2>${email['subject']}</h2>
+        <p>${email['body']}</p>
+        <p>${email['timestamp']}</p>
+      `;
+      document.querySelector('#email-content').innerHTML = '';
+      document.querySelector('#email-content').appendChild(div);
+
+      document.querySelector('#reply').addEventListener('click', () => compose_email(id, 'reply'));
+      document.querySelector('#replyAll').addEventListener('click', () => compose_email(id, 'replyAll'));
+      document.querySelector('#archive');
+  });
 }
