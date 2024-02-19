@@ -79,7 +79,7 @@ function compose_email(id, action) {
     .then(response => response.json())
     .then(result => {
         // Print result
-        console.log(`recipients: ${document.querySelector('#compose-recipients').value}`);
+        //console.log(`recipients: ${document.querySelector('#compose-recipients').value}`);
     });
   };
 }
@@ -96,7 +96,6 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log(emails);
     emails.forEach(email => {
       let div = document.createElement('div');
       div.className = 'email';
@@ -133,18 +132,27 @@ function load_email(id) {
   fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
+      let allRecipients = '';
       let div = document.createElement('div');
       div.className = 'full-email';
 
+      email['recipients'].forEach(recipient => {
+        if(allRecipients == '') {
+          allRecipients += recipient;
+        } else {
+          allRecipients += ', ' + recipient;
+        }
+      })
+
       div.style.border = '1px solid black';
       div.innerHTML = `
-        <h2>${email['sender']}</h2>
-        <h3>${email['subject']}</h3>
+        <p><strong>From: </strong>${email['sender']}</p>
+        <p><strong>To: </strong>${allRecipients}</p>
+        <p><strong>Subject: </strong>${email['subject']}</p>
+        <p><strong>Timestamp: </strong>${email['timestamp']}</p>
+        <hr>
         <p>${email['body']}</p>
-        <p>${email['timestamp']}</p>
       `;
-
-      console.log(div);
 
       document.querySelector('#email-content').innerHTML = '';
       document.querySelector('#email-content').appendChild(div);

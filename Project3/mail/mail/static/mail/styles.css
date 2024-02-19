@@ -24,6 +24,15 @@ textarea {
     padding-left: 10px;
 }
 
+.full-email {
+    padding: 5px;
+    padding-bottom: 1px;
+}
+
 #test-style {
     color: blue;
+}
+
+hr {
+    border-top: 3px solid #bbb;
 }
