@@ -19,8 +19,8 @@ function compose_email(id, action) {
     document.querySelector('#compose-view').style.display = 'block';
 
     // Clear out composition fields
-    document.querySelector('#compose-recipients').value = '';
     document.querySelector('#compose-recipients').disabled = false;
+    document.querySelector('#compose-recipients').value = '';
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
   } else {
@@ -48,23 +48,26 @@ function compose_email(id, action) {
     fetch('/emails', {
       method: 'POST',
       body: JSON.stringify({
-          recipients: document.querySelector("compose-recipients").value,
+          recipients: document.querySelector("#compose-recipients").value,
           subject: document.querySelector('#compose-subject').value,
-          body: document.querySelector('#compose-body').value
+          body: document.querySelector('#compose-body').value,
+          read: false
       })
     })
     .then(response => response.json())
     .then(result => {
         // Print result
-        console.log(result);
+        console.log(`recipients: ${document.querySelector('#compose-recipients').value}`);
     });
-    load_mailbox('sent');
   };
 }
 
 function load_mailbox(mailbox) {
 
   // Show the mailbox and hide other views
+
+  console.log(`recipients: ${document.querySelector('#compose-recipients').value}`);
+
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#single-email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
@@ -75,6 +78,7 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
+    console.log(emails);
     emails.forEach(email => {
       let div = document.createElement('div');
       div.className = 'email';
