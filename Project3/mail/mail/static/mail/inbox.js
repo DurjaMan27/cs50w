@@ -28,19 +28,35 @@ function compose_email(id, action) {
     .then(response => response.json())
     .then(email => {
       // Clear out composition fields
-      document.querySelector('#compose-recipients').value = email['sender'];
       document.querySelector('#compose-recipients').disabled = true;
-      document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
+      if(email['subject'].includes('RE:')) {
+        document.querySelector('#compose-subject').value = email['subject'];
+      } else {
+        document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
+      }
       document.querySelector('#compose-body').value = `On ${email['timestamp']}, ${email['sender']} wrote: ${email['body']}<br></br>`;
     })
 
     if(action == 'reply') {
-      // Show compose view and hide other views
+      document.querySelector('#compose-recipients').value = email['sender'];
+
       document.querySelector('#emails-view').style.display = 'none';
       document.querySelector('#single-email-view').style.display = 'block';
       document.querySelector('#compose-view').style.display = 'block';
     } else if(action == 'replyAll') {
-      console.log('not implemented yet');
+      let allRecipients = '';
+      email['recipients'].forEach(recipient => {
+        if(allRecipients == '') {
+          allRecipients += recipient;
+        } else {
+          allRecipients += ', ' + recipient;
+        }
+      })
+      document.querySelector('#compose-recipients').value = allRecipients;
+
+      document.querySelector('#emails-view').style.display = 'none';
+      document.querySelector('#single-email-view').style.display = 'block';
+      document.querySelector('#compose-view').style.display = 'block';
     }
   }
 
@@ -121,7 +137,7 @@ function load_email(id) {
       div.style.border = '1px solid black';
       div.innerHTML = `
         <h2>${email['sender']}</h2>
-        <h2>${email['subject']}</h2>
+        <h3>${email['subject']}</h3>
         <p>${email['body']}</p>
         <p>${email['timestamp']}</p>
       `;
@@ -134,11 +150,13 @@ function load_email(id) {
       document.querySelector('#reply').addEventListener('click', () => compose_email(id, 'reply'));
       document.querySelector('#replyAll').addEventListener('click', () => compose_email(id, 'replyAll'));
 
+      document.querySelector('#archive').style.display = 'none';
+      document.querySelector('#unarchive').style.display = 'none';
       if(email['archived']) {
         document.querySelector('#archive').style.display = 'none';
         document.querySelector('#unarchive').style.display = 'block';
         document.querySelector('#unarchive').addEventListener('click', () => unarchive_email(id));
-      } else {
+      } else if(!email['archived']) {
         document.querySelector('#archive').style.display = 'block';
         document.querySelector('#unarchive').style.display = 'none';
         document.querySelector('#archive').addEventListener('click', () => archive_email(id));
