@@ -24,6 +24,7 @@ function compose_email(id, action) {
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
   } else {
+    let allRecipients = '';
     fetch(`/emails/${id}`)
     .then(response => response.json())
     .then(email => {
@@ -35,6 +36,14 @@ function compose_email(id, action) {
         document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
       }
       document.querySelector('#compose-body').value = `On ${email['timestamp']}, ${email['sender']} wrote: ${email['body']}<br></br>`;
+
+      email['recipients'].forEach(recipient => {
+        if(allRecipients == '') {
+          allRecipients += recipient;
+        } else {
+          allRecipients += ', ' + recipient;
+        }
+      })
     })
 
     if(action == 'reply') {
@@ -45,13 +54,6 @@ function compose_email(id, action) {
       document.querySelector('#compose-view').style.display = 'block';
     } else if(action == 'replyAll') {
       let allRecipients = '';
-      email['recipients'].forEach(recipient => {
-        if(allRecipients == '') {
-          allRecipients += recipient;
-        } else {
-          allRecipients += ', ' + recipient;
-        }
-      })
       document.querySelector('#compose-recipients').value = allRecipients;
 
       document.querySelector('#emails-view').style.display = 'none';
