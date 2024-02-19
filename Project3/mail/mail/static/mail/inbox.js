@@ -31,7 +31,7 @@ function compose_email(id, action) {
       document.querySelector('#compose-recipients').value = email['sender'];
       document.querySelector('#compose-recipients').disabled = true;
       document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
-      document.querySelector('#compose-body').value = `On ${email['datetime']}, ${email['sender']} wrote: ${email['body']}`;
+      document.querySelector('#compose-body').value = `On ${email['timestamp']}, ${email['sender']} wrote: ${email['body']}`;
     })
 
     if(action == 'reply') {
