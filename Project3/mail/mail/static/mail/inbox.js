@@ -24,40 +24,45 @@ function compose_email(id, action) {
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
   } else {
-    let allRecipients = '';
-    fetch(`/emails/${id}`)
-    .then(response => response.json())
-    .then(email => {
-      // Clear out composition fields
-      document.querySelector('#compose-recipients').disabled = true;
-      if(email['subject'].includes('RE:')) {
-        document.querySelector('#compose-subject').value = email['subject'];
-      } else {
-        document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
-      }
-      document.querySelector('#compose-body').value = `On ${email['timestamp']}, ${email['sender']} wrote: ${email['body']}<br></br>`;
-
-      email['recipients'].forEach(recipient => {
-        if(allRecipients == '') {
-          allRecipients += recipient;
-        } else {
-          allRecipients += ', ' + recipient;
-        }
-      })
-
-      document.querySelector('#compose-recipients').value = allRecipients;
-    })
+    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#single-email-view').style.display = 'block';
+    document.querySelector('#compose-view').style.display = 'block';
 
     if(action == 'reply') {
-      document.querySelector('#compose-recipients').value = email['sender'];
-
-      document.querySelector('#emails-view').style.display = 'none';
-      document.querySelector('#single-email-view').style.display = 'block';
-      document.querySelector('#compose-view').style.display = 'block';
+      fetch(`/emails/${id}`)
+      .then(response => response.json())
+      .then(email => {
+        document.querySelector('#compose-recipients').disabled = true;
+        if(email['subject'].includes('RE:')) {
+          document.querySelector('#compose-subject').value = email['subject'];
+        } else {
+          document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
+        }
+        document.querySelector('#compose-body').value = `On ${email['timestamp']}, ${email['sender']} wrote: ${email['body']}<br></br>`;
+        document.querySelector('#compose-recipients').value = email['sender'];
+      })
     } else if(action == 'replyAll') {
-      document.querySelector('#emails-view').style.display = 'none';
-      document.querySelector('#single-email-view').style.display = 'block';
-      document.querySelector('#compose-view').style.display = 'block';
+      let allRecipients = '';
+      fetch(`/emails/${id}`)
+      .then(response => response.json())
+      .then(email => {
+        document.querySelector('#compose-recipients').disabled = true;
+        if(email['subject'].includes('RE:')) {
+          document.querySelector('#compose-subject').value = email['subject'];
+        } else {
+          document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
+        }
+        document.querySelector('#compose-body').value = `On ${email['timestamp']}, ${email['sender']} wrote: ${email['body']}<br></br>`;
+
+        email['recipients'].forEach(recipient => {
+          if(allRecipients == '') {
+            allRecipients += recipient;
+          } else {
+            allRecipients += ', ' + recipient;
+          }
+        })
+        document.querySelector('#compose-recipients').value = allRecipients;
+      })
     }
   }
 
