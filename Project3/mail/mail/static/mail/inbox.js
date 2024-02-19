@@ -35,11 +35,10 @@ function compose_email(id, action) {
     })
 
     if(action == 'reply') {
-    // Show compose view and hide other views
-    document.querySelector('#emails-view').style.display = 'none';
-    document.querySelector('#single-email-view').style.display = 'block';
-    document.querySelector('#compose-view').style.display = 'block';
-
+      // Show compose view and hide other views
+      document.querySelector('#emails-view').style.display = 'none';
+      document.querySelector('#single-email-view').style.display = 'block';
+      document.querySelector('#compose-view').style.display = 'block';
     } else if(action == 'replyAll') {
       console.log('not implemented yet');
     }
