@@ -44,6 +44,8 @@ function compose_email(id, action) {
           allRecipients += ', ' + recipient;
         }
       })
+
+      document.querySelector('#compose-recipients').value = allRecipients;
     })
 
     if(action == 'reply') {
@@ -53,9 +55,6 @@ function compose_email(id, action) {
       document.querySelector('#single-email-view').style.display = 'block';
       document.querySelector('#compose-view').style.display = 'block';
     } else if(action == 'replyAll') {
-      let allRecipients = '';
-      document.querySelector('#compose-recipients').value = allRecipients;
-
       document.querySelector('#emails-view').style.display = 'none';
       document.querySelector('#single-email-view').style.display = 'block';
       document.querySelector('#compose-view').style.display = 'block';
