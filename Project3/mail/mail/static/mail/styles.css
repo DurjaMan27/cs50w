@@ -2,6 +2,11 @@ textarea {
     min-height: 400px;
 }
 
-#email:hover {
+.emails-view {
     cursor: pointer;
+}
+
+.emails-view h2 {
+    color: blue;
+    text-align: right;
 }
