@@ -94,8 +94,8 @@ function load_mailbox(mailbox) {
       `;
       document.querySelector('#emails-view').appendChild(div);
       div.addEventListener('click', () => load_email(email['id']));
-    });
-  })
+    })
+  });
 }
 
 function load_email(id) {
@@ -109,6 +109,8 @@ function load_email(id) {
         read: true
     })
   })
+
+  fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
       let div = document.createElement('div');
@@ -121,6 +123,9 @@ function load_email(id) {
         <p>${email['body']}</p>
         <p>${email['timestamp']}</p>
       `;
+
+      console.log(div);
+
       document.querySelector('#email-content').innerHTML = '';
       document.querySelector('#email-content').appendChild(div);
 
@@ -146,6 +151,8 @@ function archive_email(id) {
         archived: true
     })
   })
+
+  fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
     load_mailbox('inbox');
@@ -159,6 +166,8 @@ function unarchive_email(id) {
       archived: false
     })
   })
+
+  fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
     load_mailbox('inbox');
