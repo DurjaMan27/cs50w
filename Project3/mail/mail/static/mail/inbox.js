@@ -24,15 +24,17 @@ function compose_email(id, action) {
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
   } else {
+
     document.querySelector('#emails-view').style.display = 'none';
     document.querySelector('#single-email-view').style.display = 'block';
     document.querySelector('#compose-view').style.display = 'block';
+
+    document.querySelector('#compose-recipients').disabled = true;
 
     if(action == 'reply') {
       fetch(`/emails/${id}`)
       .then(response => response.json())
       .then(email => {
-        document.querySelector('#compose-recipients').disabled = true;
         if(email['subject'].includes('RE:')) {
           document.querySelector('#compose-subject').value = email['subject'];
         } else {
@@ -46,7 +48,6 @@ function compose_email(id, action) {
       fetch(`/emails/${id}`)
       .then(response => response.json())
       .then(email => {
-        document.querySelector('#compose-recipients').disabled = true;
         if(email['subject'].includes('RE:')) {
           document.querySelector('#compose-subject').value = email['subject'];
         } else {
@@ -85,10 +86,6 @@ function compose_email(id, action) {
 }
 
 function load_mailbox(mailbox) {
-
-  // Show the mailbox and hide other views
-
-  console.log(`recipients: ${document.querySelector('#compose-recipients').value}`);
 
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#single-email-view').style.display = 'none';
