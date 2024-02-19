@@ -24,29 +24,21 @@ function compose_email(id, action) {
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
   } else {
-    let recipient;
-    let subject;
-    let outsideEmail;
-
     fetch(`/emails/${id}`)
     .then(response => response.json())
     .then(email => {
-        outsideEmail = email;
-    });
-
-    console.log(outsideEmail);
+      // Clear out composition fields
+      document.querySelector('#compose-recipients').value = email['sender'];
+      document.querySelector('#compose-recipients').disabled = true;
+      document.querySelector('#compose-subject').value = `RE: ${email['subject']}`;
+      document.querySelector('#compose-body').value = `On ${email['datetime']}, ${email['sender']} wrote: ${email['body']}`;
+    })
 
     if(action == 'reply') {
     // Show compose view and hide other views
     document.querySelector('#emails-view').style.display = 'none';
     document.querySelector('#single-email-view').style.display = 'block';
     document.querySelector('#compose-view').style.display = 'block';
-
-    // Clear out composition fields
-    document.querySelector('#compose-recipients').value = recipient;
-    document.querySelector('#compose-recipients').disabled = true;
-    document.querySelector('#compose-subject').value = `RE: ${subject}`;
-    document.querySelector('#compose-body').value = '';
 
     } else if(action == 'replyAll') {
       console.log('not implemented yet');
@@ -93,7 +85,6 @@ function load_mailbox(mailbox) {
         <h2>${email['sender']} - ${email['subject']}</h2>
         <p>${email['timestamp']}</p>
       `;
-      console.log(div);
       document.querySelector('#emails-view').appendChild(div);
       div.addEventListener('click', () => load_email(email['id']));
     });
@@ -109,7 +100,6 @@ function load_email(id) {
   fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
-      console.log(email);
       let div = document.createElement('div');
       div.className = 'full-email';
 
